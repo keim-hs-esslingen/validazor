@@ -12,7 +12,7 @@ data class ConstraintInfo(
     /**
      * An optional map of detailed information about the constraint, e.g. a map of the annotations' properties.
      */
-    val details: Map<String, Any?>? = null
+    val details: Map<String, Any?> = mapOf()
 ) {
     companion object {
         /**
@@ -21,11 +21,8 @@ data class ConstraintInfo(
          * the annotations' fields mapped to their values.
          */
         @JvmStatic
-        fun fromAnnotation(ann: Annotation): ConstraintInfo {
-            return ConstraintInfo(
-                id = ann.javaClass.name,
-                details = ann.asMapOfFields()
-            )
+        fun fromAnnotation(annotation: Annotation): ConstraintInfo {
+            return annotation.toConstraintInfo()
         }
     }
 }
