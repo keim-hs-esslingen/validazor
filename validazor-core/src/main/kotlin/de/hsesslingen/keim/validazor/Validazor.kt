@@ -63,8 +63,9 @@ class Validazor private constructor(
      * If the resulting [Set] of [Violation]s is empty, [instance] can be considered valid.
      * If the resulting [Set] of [Violation]s is *not* empty, [instance] must be considered invalid.
      */
-    fun validate(instance: Any): Set<Violation> {
-        val violations = HashSet<Violation>()
+    fun validate(instance: Any): List<Violation> {
+        val violations = ArrayList<Violation>()
+
         val tracker = object : ViolationTracker {
             override val hasViolations: Boolean
                 get() = violations.isNotEmpty()
@@ -128,7 +129,8 @@ class Validazor private constructor(
                 .all { isValid -> isValid || !stopOnFirstViolation }
 
             // Fields are validated in validateObject, including native types.
-            is Byte, Short, Int, Long, UByte, UShort, UInt, ULong, Double, Float, Char, String, Boolean -> {}
+            is Byte, is Short, is Int, is Long, is UByte, is UShort,
+            is UInt, is ULong, is Double, is Float, is Char, is String, is Boolean -> {}
 
             else -> validateObject(instance, instancePath, tracker)
         }
@@ -141,31 +143,29 @@ class Validazor private constructor(
         instancePath: PropertyPath,
         tracker: ViolationTracker
     ): Boolean {
-        var currentClass: Class<*>? = instance::class.java
+        var currentClass: Class<*>? = instance.javaClass
 
-        val superclasses = generateSequence { currentClass?.superclass }
-            .onEach { currentClass = it }
+        val classList = generateSequence { currentClass }
+            .onEach { currentClass = it.superclass }
             .takeWhile {
                 @Suppress("SENSELESS_COMPARISON") // Can indeed be null according to JavaDoc of getSuperclass()
                 it != null
             }
-
-        val allClassAnnotations = instance.javaClass.annotations.asSequence() +
-                superclasses.flatMap { it.annotations.asSequence() }
+            .toList()
 
         // First validate class level annotations
-        allClassAnnotations.all {
-            validateValue(instance, instancePath, tracker, it) || !stopOnFirstViolation
-        }
+        classList.asSequence()
+            .flatMap { it.annotations.asSequence() }
+            .all { validateValue(instance, instancePath, tracker, it) || !stopOnFirstViolation }
 
         if (tracker.hasViolations && stopOnFirstViolation) {
             return false
         }
 
         // Then field level annotations
-        instance.javaClass.fields.all {
-            validateField(instance, it, instancePath, tracker) || !stopOnFirstViolation
-        }
+        classList.asSequence()
+            .flatMap { it.declaredFields.asSequence() }
+            .all { validateField(instance, it, instancePath, tracker) || !stopOnFirstViolation }
 
         return tracker.hasViolations
     }
@@ -176,22 +176,27 @@ class Validazor private constructor(
         instancePath: PropertyPath,
         tracker: ViolationTracker,
     ): Boolean {
-        if (excludeStaticFields && property.modifiers.and(Modifier.STATIC) > 0) {
+        if (excludeStaticFields && property.isStatic()) {
             return true
         }
-        if (excludePrivateFields && property.modifiers.and(Modifier.PRIVATE) > 0) {
+        if (excludePrivateFields && property.isPrivate()) {
             return true
         }
-        if (excludeProtectedFields && property.modifiers.and(Modifier.PROTECTED) > 0) {
+        if (excludeProtectedFields && property.isProtected()) {
             return true
+        }
+
+        if (property.isPrivate() || property.isProtected()) {
+            if (!property.checkAndTrySetAccessible(instance)) {
+                return true
+            }
         }
 
         val fieldValue: Any? = property.get(instance)
         val fieldPath = instancePath.child(property.name)
 
         // Validate each annotation on the field.
-        // The method validateAnnotation decides how to handle the various available annotations.
-        property.annotations?.all {
+        property.declaredAnnotations.all {
             // Using all together with || !stopOnFirstViolation allows an early exit if stopping is configured
             // and a continuation if stopping is not configured.
             validateValue(fieldValue, fieldPath, tracker, it) || !stopOnFirstViolation
