@@ -6,10 +6,14 @@ package de.hsesslingen.keim.validazor
  *
  * [ConstraintValidazor]s should be implemented with thread safety in mind, so it is good practise
  * to implement them in an immutable and stateless fashion.
+ *
+ * If the [ConstraintValidazor] is supposed to be configurable, consider using a builder pattern to allow
+ * configuration of such a [ConstraintValidazor], to be able to produce configured, immutable instances of
+ * [ConstraintValidazor] from this builder.
  */
 interface ConstraintValidazor<A : Annotation> {
     /**
-     * This method is called during validation by a [Validazor] and is supposed to validate the given
+     * This method is called during validation by a [Validazor] and is supposed to validate a given
      * [constraint] on the given [value].
      *
      * The [value] object resides somewhere in the hierarchy of the object that was sent into the validator for validation.

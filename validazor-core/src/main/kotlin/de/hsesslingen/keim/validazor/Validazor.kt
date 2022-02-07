@@ -11,7 +11,10 @@ import java.lang.reflect.Modifier
  * Configure and create instances of this class by instantiating the nested [Builder] class.
  *
  * Thread safety cannot be guaranteed though since the [ConstraintValidazor] instances used in this class
- * can be provided by third parties and therefore are out of our control.
+ * can be provided by third parties and therefore are out of our control. If these [ConstraintValidazor]s are
+ * thread safe though, concurrently calling the same [Validazor] instance with multiple threads is safe.
+ *
+ * An instance of [Validazor] can therefore be used with any injection framework of choice.
  *
  * @see [Builder] for more information on the particular properties.
  */
