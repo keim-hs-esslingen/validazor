@@ -51,15 +51,9 @@ class PropertyPath private constructor(
      * Derives a new path node from this node for a key object, e.g. a key of a [Map].
      */
     fun key(key: Any?): PropertyPath {
-        val keyStr = if (key != null && key is String) {
-            "\"$key\""
-        } else {
-            "$key"
-        }
-
         return PropertyPath(
             parent = this,
-            name = "[$keyStr]",
+            name = "[$key]",
             childSeparator = childSeparator,
             separateFromParent = false
         )
@@ -77,16 +71,6 @@ class PropertyPath private constructor(
             childSeparator = childSeparator,
             separateFromParent = false
         )
-    }
-
-    /**
-     * Derives a new path node from this node using a "where"-notation.
-     * This will result in a notation like parent[where $propertyName=$propertyValue], which is useful
-     * if items in a collection are not identified by their index but by a value of a property of their own.
-     */
-    fun where(propertyName: String, propertyValue: String): PropertyPath {
-        // Adding quotation marks if called with string property value to reflect type in the output.
-        return where(propertyName, "\"$propertyValue\"" as Any) // Casting to Any to call other function.
     }
 
     /**
@@ -116,7 +100,7 @@ class PropertyPath private constructor(
         }
 
         if (pathString.isNotEmpty() && previous.separateFromParent) {
-            pathString = pathString.substring(1)
+            pathString = pathString.substring(previous.separator.length)
         }
 
         return pathString
