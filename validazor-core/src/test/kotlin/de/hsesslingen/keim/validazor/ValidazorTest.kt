@@ -3,6 +3,7 @@ package de.hsesslingen.keim.validazor
 import de.hsesslingen.keim.validazor.testutil.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import java.lang.Exception
 
 class ValidazorTest {
 
@@ -149,4 +150,44 @@ class ValidazorTest {
         assertViolationsCorrectForInvalidPersonDeep(violations, separator)
     }
 
+    @Test
+    fun testAssertValidValidPerson() {
+        val person = validPersonSimple()
+        val validazor = createValidazor().build()
+
+        try {
+            validazor.assertValid(person)
+        } catch (ex: Exception) {
+            fail("Unexpected exception occurred.", ex)
+        }
+    }
+
+    @Test
+    fun testAssertValidInvalidPerson() {
+        val person = invalidPersonDeep()
+        val validazor = createValidazor().build()
+
+        try {
+            validazor.assertValid(person)
+            fail("Expected exception but non occurred.")
+        } catch (ex: ViolationException) {
+            assertViolationsCorrectForInvalidPersonDeep(ex.violations, PropertyPath.DEFAULT_PATH_SEPARATOR)
+        } catch (ex: Exception) {
+            fail("Unexpected exception occurred.", ex)
+        }
+    }
+
+    @Test
+    fun testIsValidValidPerson() {
+        val person = validPersonSimple()
+        val validazor = createValidazor().build()
+        assertTrue(validazor.isValid(person))
+    }
+
+    @Test
+    fun testIsValidInvalidPerson() {
+        val person = invalidPersonDeep()
+        val validazor = createValidazor().build()
+        assertFalse(validazor.isValid(person))
+    }
 }
