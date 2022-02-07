@@ -71,7 +71,7 @@ annotation class Password(
     /**
      * A [ConstraintValidazor] for the [Password] constraint annotation.
      */
-    class Validazor : ConstraintValidazor<Password>, ValidazorModule {
+    class Validator : ConstraintValidazor<Password>, ValidazorModule {
         override fun validate(
             constraint: Password,
             value: Any?,
@@ -118,19 +118,19 @@ annotation class Password(
             returnOnFirstViolation: Boolean,
         ) {
             if (password.size < constraint.minLength) {
-                violations.add("must be longer than ${constraint.minLength}", path, constraint.toConstraintInfo())
+                violations.add("must be at least ${constraint.minLength} characters long", path, constraint.toConstraintInfo())
                 if (returnOnFirstViolation) return
             }
 
             if (password.size > constraint.maxLength) {
-                violations.add("must be shorter than ${constraint.maxLength}", path, constraint.toConstraintInfo())
+                violations.add("must not be longer than ${constraint.maxLength} characters", path, constraint.toConstraintInfo())
                 if (returnOnFirstViolation) return
             }
 
             if (constraint.allowedCharacters.isNotEmpty()) {
                 for (char in password) {
                     if (!constraint.allowedCharacters.contains(char)) {
-                        violations.add("must not contain character $char", path, constraint.toConstraintInfo())
+                        violations.add("must not contain character '$char'", path, constraint.toConstraintInfo())
                         if (returnOnFirstViolation) return
                     }
                 }
@@ -139,7 +139,7 @@ annotation class Password(
             if (constraint.forbiddenCharacters.isNotEmpty()) {
                 for (char in password) {
                     if (constraint.forbiddenCharacters.contains(char)) {
-                        violations.add("must not contain character $char", path, constraint.toConstraintInfo())
+                        violations.add("must not contain character '$char'", path, constraint.toConstraintInfo())
                         if (returnOnFirstViolation) return
                     }
                 }
