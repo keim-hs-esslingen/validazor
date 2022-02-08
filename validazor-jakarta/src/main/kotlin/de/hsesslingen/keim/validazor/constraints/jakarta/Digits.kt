@@ -31,15 +31,10 @@ class DigitsValidazor : ConstraintValidazor<Digits> {
             when (value) {
                 null -> true
 
-                is Byte -> value.toDouble().integerDigits() <= constraint.integer
-                is Short -> value.toDouble().integerDigits() <= constraint.integer
-                is Int -> value.toDouble().integerDigits() <= constraint.integer
-                is Long -> value.toDouble().integerDigits() <= constraint.integer
-
-                is UByte -> value.toDouble().integerDigits() <= constraint.integer
-                is UShort -> value.toDouble().integerDigits() <= constraint.integer
-                is UInt -> value.toDouble().integerDigits() <= constraint.integer
-                is ULong -> value.toDouble().integerDigits() <= constraint.integer
+                is Byte -> value.toLong().toBigDecimal().matchesDigitConstraints(constraint)
+                is Short -> value.toLong().toBigDecimal().matchesDigitConstraints(constraint)
+                is Int -> value.toBigDecimal().matchesDigitConstraints(constraint)
+                is Long -> value.toBigDecimal().matchesDigitConstraints(constraint)
 
                 is Float -> value.toBigDecimal().matchesDigitConstraints(constraint)
                 is Double -> value.toBigDecimal().matchesDigitConstraints(constraint)

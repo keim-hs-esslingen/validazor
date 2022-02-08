@@ -7,14 +7,15 @@ import kotlin.math.log10
 import kotlin.math.roundToInt
 
 /**
- * Combines an array of pattern flags of a [jakarta.validation.constraints.Pattern] annotation using XOR
+ * Merges an array of pattern flags of a [jakarta.validation.constraints.Pattern] annotation using bitwise OR
  * to create a single integer flag-bitmask which can be used with a [java.util.regex.Pattern].
  */
 @Suppress("SpellCheckingInspection")
-fun Array<Pattern.Flag>.xord(): Int {
+fun Array<Pattern.Flag>.merge(): Int {
     return this.asSequence()
-        .map { it.value /* is JDK-Value*/ }
-        .reduce { a, b -> a xor b }
+        .map { it.value /* is JDK-Value */ }
+        .reduceOrNull() { a, b -> a or b }
+        ?: 0
 }
 
 /**
@@ -36,8 +37,10 @@ fun Double.integerDigits(): Int {
  * Checks whether this [BigDecimal] matches the given constraints.
  */
 fun BigDecimal.matchesDigitConstraints(maxIntegerDigits: Int, maxFractionDigits: Int): Boolean {
-    val strippedScale = this.stripTrailingZeros().scale()
-    return (this.precision() - strippedScale) <= maxIntegerDigits && strippedScale <= maxFractionDigits
+    val stripped = this.stripTrailingZeros()
+    val strippedScale = stripped.scale()
+    val strippedPrecision = stripped.precision()
+    return (strippedPrecision - strippedScale) <= maxIntegerDigits && strippedScale <= maxFractionDigits
 }
 
 /**

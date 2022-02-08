@@ -18,8 +18,8 @@ class EmailValidazor : ConstraintValidazor<Email> {
     ) {
         if (constraint.regexp != ".*") {
             // Include extra pattern defined in this Email annotation instance.
-            val extraPattern = java.util.regex.Pattern.compile(constraint.regexp, constraint.flags.xord())
-            val violationMessage = "must be a valid email address and additionally match pattern ${constraint.regexp}"
+            val extraPattern = java.util.regex.Pattern.compile(constraint.regexp, constraint.flags.merge())
+            val violationMessage = "must be a valid email address and additionally match pattern \"${constraint.regexp}\""
 
             checkConstraint(violationMessage, path, constraint, violations) {
                 value !is String || (VALID_EMAIL_PATTERN.matches(value) && extraPattern.matcher(value).matches())

@@ -19,7 +19,7 @@ class PositiveOrZeroValidazor : ConstraintValidazor<PositiveOrZero> {
         returnOnFirstViolation: Boolean
     ) {
         checkConstraint(
-            "must not be less than 0",
+            "must be greater than or equal to zero",
             path,
             constraint,
             violations

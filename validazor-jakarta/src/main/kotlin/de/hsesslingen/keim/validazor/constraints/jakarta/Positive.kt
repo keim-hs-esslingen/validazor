@@ -18,7 +18,7 @@ class PositiveValidazor : ConstraintValidazor<Positive> {
         violations: ViolationCollector,
         returnOnFirstViolation: Boolean
     ) {
-        checkConstraint("must be greater than 0", path, constraint, violations) {
+        checkConstraint("must be greater than zero", path, constraint, violations) {
             when (value) {
                 is Int -> value > 0
                 is Long -> value > 0

@@ -17,7 +17,7 @@ class PatternValidazor : ConstraintValidazor<Pattern> {
         returnOnFirstViolation: Boolean
     ) {
         checkConstraint("must match pattern", path, constraint, violations) {
-            value !is String || java.util.regex.Pattern.compile(constraint.regexp, constraint.flags.xord())
+            value !is String || java.util.regex.Pattern.compile(constraint.regexp, constraint.flags.merge())
                 .matcher(value).matches()
         }
     }

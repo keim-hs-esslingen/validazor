@@ -6,7 +6,7 @@ import de.hsesslingen.keim.validazor.ViolationCollector
 import jakarta.validation.constraints.AssertFalse
 import jakarta.validation.constraints.AssertTrue
 
-sealed class BooleanValidazor<A : Annotation>(
+sealed class BooleanValidator<A : Annotation>(
     private val requiredValue: Boolean
 ) : ConstraintValidazor<A> {
     override fun validate(
@@ -28,9 +28,9 @@ sealed class BooleanValidazor<A : Annotation>(
 /**
  * A [ConstraintValidazor] for the Jakarta [AssertFalse] constraint.
  */
-class AssertFalseValidazor : BooleanValidazor<AssertFalse>(false)
+class AssertFalseValidator : BooleanValidator<AssertFalse>(false)
 
 /**
  * A [ConstraintValidazor] for the Jakarta [AssertTrue] constraint.
  */
-class AssertTrueValidazor : BooleanValidazor<AssertTrue>(true)
+class AssertTrueValidator : BooleanValidator<AssertTrue>(true)

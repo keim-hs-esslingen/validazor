@@ -20,6 +20,7 @@ class NotEmptyValidazor : ConstraintValidazor<NotEmpty> {
             when (value) {
                 is String -> value.isNotEmpty()
                 is Collection<*> -> value.isNotEmpty()
+                is Map<*, *> -> value.isNotEmpty()
                 is Array<*> -> value.isNotEmpty()
                 else -> true
             }

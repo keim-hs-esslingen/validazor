@@ -5,8 +5,8 @@ import de.hsesslingen.keim.validazor.Validazor
 
 class JakartaValidationModule : ValidazorModule {
     override fun configure(builder: Validazor.Builder) {
-        builder.register(AssertFalseValidazor())
-        builder.register(AssertTrueValidazor())
+        builder.register(AssertFalseValidator())
+        builder.register(AssertTrueValidator())
         builder.register(DecimalMaxValidazor())
         builder.register(DecimalMinValidazor())
         builder.register(DigitsValidazor())

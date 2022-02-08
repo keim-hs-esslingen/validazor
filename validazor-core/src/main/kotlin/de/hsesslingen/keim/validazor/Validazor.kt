@@ -1,7 +1,7 @@
 package de.hsesslingen.keim.validazor
 
+import de.hsesslingen.keim.validazor.Validazor.Builder
 import java.lang.reflect.Field
-import java.lang.reflect.Modifier
 
 /**
  * This class is the heart of this validation framework. It contains the recursive traversal algorithm that searches
@@ -43,6 +43,11 @@ class Validazor private constructor(
      * @see [Builder.stopOnFirstViolation]
      */
     val stopOnFirstViolation: Boolean,
+
+    /**
+     * @see [Builder.excludePackageByPrefix]
+     */
+    val excludedPackagesPrefixes: List<String>,
 
     /**
      * A [Map] of validators for validating constraints. @see [Builder.register] for more information.
@@ -117,6 +122,16 @@ class Validazor private constructor(
             return true
         }
 
+        // Check whether the current object is an object from the Java stdlib or the Kotlin stdlib.
+        // These objects to not contain constraint annotations and are excluded from validation checks
+        // to increase performance and to avoid problems due to accessing deep hidden stuff.
+        val packageName = instance.javaClass.packageName
+        val isStdlibClass = packageName.startsWith("java.") || packageName.startsWith("kotlin.")
+
+        if (isStdlibClass || excludedPackagesPrefixes.any { packageName.startsWith(it) }) {
+            return true
+        }
+
         when (instance) {
             is Map<*, *> -> instance.keys
                 .all { key ->
@@ -127,10 +142,6 @@ class Validazor private constructor(
             is Iterable<*> -> instance.asSequence()
                 .mapIndexed { index, el -> validate(el, instancePath.index(index), tracker) }
                 .all { isValid -> isValid || !stopOnFirstViolation }
-
-            // Fields are validated in validateObject, including native types.
-            is Byte, is Short, is Int, is Long, is UByte, is UShort,
-            is UInt, is ULong, is Double, is Float, is Char, is String, is Boolean -> {}
 
             else -> validateObject(instance, instancePath, tracker)
         }
@@ -165,7 +176,9 @@ class Validazor private constructor(
         // Then field level annotations
         classList.asSequence()
             .flatMap { it.declaredFields.asSequence() }
-            .all { validateField(instance, it, instancePath, tracker) || !stopOnFirstViolation }
+            .all {
+                validateField(instance, it, instancePath, tracker) || !stopOnFirstViolation
+            }
 
         return tracker.hasViolations
     }
@@ -229,26 +242,33 @@ class Validazor private constructor(
      */
     class Builder(
         /**
-         * @see [Builder.pathSeparator]
+         * @see [pathSeparator]
          */
         var pathSeparator: String = PropertyPath.DEFAULT_PATH_SEPARATOR,
         /**
-         * @see [Builder.excludeStaticFields]
+         * @see [excludeStaticFields]
          */
         var excludeStaticFields: Boolean = true,
         /**
-         * @see [Validazor.excludePrivateFields]
+         * @see [excludePrivateFields]
          */
         var excludePrivateFields: Boolean = false,
         /**
-         * @see [Validazor.excludeProtectedFields]
+         * @see [excludeProtectedFields]
          */
         var excludeProtectedFields: Boolean = false,
         /**
-         * @see [Validazor.stopOnFirstViolation]
+         * @see [excludePackageByPrefix]
+         */
+        excludedPackagesPrefixes: List<String> = listOf(),
+        /**
+         * @see [stopOnFirstViolation]
          */
         var stopOnFirstViolation: Boolean = false,
     ) {
+        private val registeredValidators = HashMap<Class<*>, ConstraintValidazor<*>>()
+        private val excludedPackagesPrefixes = excludedPackagesPrefixes.toMutableList()
+
         /**
          * Which path node separator should be used when converting the location of a property to a string path.
          */
@@ -292,7 +312,14 @@ class Validazor private constructor(
             return this
         }
 
-        private val registeredValidators = HashMap<Class<*>, ConstraintValidazor<*>>()
+        /**
+         * A list of prefixes of packages excluded from validation.
+         * Objects of classes inside these packages are excluded from validation.
+         */
+        fun excludePackageByPrefix(prefix: String): Builder {
+            excludedPackagesPrefixes.add(prefix)
+            return this
+        }
 
         /**
          * Registers a new constraint annotation together with a validator on this [Builder].
@@ -337,6 +364,7 @@ class Validazor private constructor(
                 excludePrivateFields = excludePrivateFields,
                 excludeProtectedFields = excludeProtectedFields,
                 stopOnFirstViolation = stopOnFirstViolation,
+                excludedPackagesPrefixes = excludedPackagesPrefixes,
                 validators = registeredValidators,
             )
         }
