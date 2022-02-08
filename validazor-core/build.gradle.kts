@@ -4,6 +4,7 @@ val metaGroup: String by project
 val metaArtifactId: String by project
 val metaVersion: String by project
 val metaDescription: String by project
+val jupiterApiVersion: String by project
 
 // Provided by gradle.properties in gradle home dir.
 val mavenUsername: String by project
@@ -26,7 +27,9 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
+
+    testImplementation(project(":test-utils"))
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$jupiterApiVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 
