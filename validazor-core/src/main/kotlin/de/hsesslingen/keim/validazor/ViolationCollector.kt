@@ -16,13 +16,3 @@ interface ViolationCollector {
         add(message, path, constraint.toConstraintInfo())
     }
 }
-
-/**
- * An interface used internally for tracking the violations collected during validation.
- */
-internal interface ViolationTracker : ViolationCollector {
-    /**
-     * `true` if any violations were added to this tracker, yet, otherwise `false`.
-     */
-    val hasViolations: Boolean
-}

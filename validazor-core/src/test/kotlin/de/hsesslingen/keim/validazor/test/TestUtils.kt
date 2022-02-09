@@ -1,26 +1,8 @@
-package de.hsesslingen.keim.validazor.constraints.jakarta.test
+package de.hsesslingen.keim.validazor.test
 
-import de.hsesslingen.keim.validazor.NowContext
-import de.hsesslingen.keim.validazor.NowContext.Companion.fromSystemNow
-import de.hsesslingen.keim.validazor.Validazor
 import de.hsesslingen.keim.validazor.Violation
-import de.hsesslingen.keim.validazor.constraints.jakarta.JakartaValidationModule
 import de.hsesslingen.keim.validazor.testutils.assertAny
 import de.hsesslingen.keim.validazor.testutils.assertNone
-
-fun validazor(): Validazor {
-    return Validazor.Builder()
-        .register(JakartaValidationModule())
-        .build()
-}
-
-fun validate(obj: Any, nowContext: NowContext = fromSystemNow()): List<Violation> {
-    return validazor().validate(obj, nowContext)
-}
-
-fun assertValid(obj: Any, nowContext: NowContext = fromSystemNow()) {
-    validazor().assertValid(obj, nowContext)
-}
 
 fun <C : Collection<Violation>> C.assertPresent(message: String, `for path`: String): C {
     return this.assertAny { it.path == `for path` && it.message == message }

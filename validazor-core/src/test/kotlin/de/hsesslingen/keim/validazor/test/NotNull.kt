@@ -1,4 +1,4 @@
-package de.hsesslingen.keim.validazor.testutil
+package de.hsesslingen.keim.validazor.test
 
 import de.hsesslingen.keim.validazor.*
 

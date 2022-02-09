@@ -1,4 +1,4 @@
-package de.hsesslingen.keim.validazor.testutil
+package de.hsesslingen.keim.validazor.test
 
 const val VALID_STREET = "Kanalstrasse"
 const val INVALID_STREET = "Charlottenplatz"

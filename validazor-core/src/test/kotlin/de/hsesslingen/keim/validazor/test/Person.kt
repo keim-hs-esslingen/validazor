@@ -1,4 +1,4 @@
-package de.hsesslingen.keim.validazor.testutil
+package de.hsesslingen.keim.validazor.test
 
 const val VALID_NAME = "John Doe"
 const val INVALID_NAME = "Mr X"

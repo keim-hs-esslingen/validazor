@@ -1,7 +1,7 @@
 package de.hsesslingen.keim.validazor
 
-import de.hsesslingen.keim.validazor.testutil.NotNull
-import de.hsesslingen.keim.validazor.testutil.ToStringEquals
+import de.hsesslingen.keim.validazor.test.NotNull
+import de.hsesslingen.keim.validazor.test.ToStringEquals
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 

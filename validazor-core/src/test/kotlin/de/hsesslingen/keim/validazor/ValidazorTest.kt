@@ -1,13 +1,13 @@
 package de.hsesslingen.keim.validazor
 
-import de.hsesslingen.keim.validazor.testutil.*
+import de.hsesslingen.keim.validazor.test.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.lang.Exception
 
 class ValidazorTest {
 
-    fun createValidazor(): Validazor.Builder {
+    fun validazor(): Validazor.Builder {
         return Validazor.Builder()
             .register(NotNull.Validator())
             .register(ToStringEquals.Validator())
@@ -15,7 +15,7 @@ class ValidazorTest {
             .register(InhabitantsCorrectAddress.Validator())
     }
 
-    fun validPersonSimple(): Person {
+    private fun validPersonSimple(): Person {
         return Person(
             name = VALID_NAME,
             age = VALID_AGE,
@@ -29,7 +29,7 @@ class ValidazorTest {
         )
     }
 
-    fun invalidPersonSimple(): Person {
+    private fun invalidPersonSimple(): Person {
         return Person(
             name = INVALID_NAME,
             age = INVALID_AGE,
@@ -43,7 +43,7 @@ class ValidazorTest {
         )
     }
 
-    fun invalidPersonDeep(): Person {
+    private fun invalidPersonDeep(): Person {
         return invalidPersonSimple().apply {
             friends = listOf(
                 validPersonSimple().apply { age = YOUNGER_AS_VALID_AGE },
@@ -65,62 +65,58 @@ class ValidazorTest {
         }
     }
 
-    fun assertViolationsCorrectForInvalidPersonDeep(violations: Collection<Violation>, s: String) {
-        assertTrue(violations.isNotEmpty())
+    private fun assertViolationsCorrectForInvalidPersonDeep(violations: Collection<Violation>, s: String) {
         assertTrue(violations.all { it.constraint != null })
 
-        assertTrue(violations.any { it.path == "" && it.message == OlderThanFriends.MSG })
-        assertTrue(violations.any { it.path == "name" && it.message == INVALID_NAME_MSG })
-        assertTrue(violations.any { it.path == "age" && it.message == INVALID_AGE_MSG })
-        assertTrue(violations.any { it.path == "email" && it.message == INVALID_EMAIL_MSG })
-        assertTrue(violations.any { it.path == "address${s}street" && it.message == INVALID_STREET_MSG })
-        assertTrue(violations.any { it.path == "address${s}city" && it.message == INVALID_CITY_MSG })
-        assertTrue(violations.any { it.path == "address${s}zip" && it.message == INVALID_ZIP_MSG })
+        violations
+            .assertPresent(OlderThanFriends.MSG, "")
+            .assertPresent(INVALID_NAME_MSG, "name")
+            .assertPresent(INVALID_AGE_MSG, "age")
+            .assertPresent(INVALID_EMAIL_MSG, "email")
+            .assertPresent(INVALID_STREET_MSG, "address${s}street")
+            .assertPresent(INVALID_CITY_MSG, "address${s}city")
+            .assertPresent(INVALID_ZIP_MSG, "address${s}zip")
+            .assertPresent(INVALID_AGE_MSG, "friends[0]${s}age")
+            .assertPresent(INVALID_AGE_MSG, "friends[1]${s}age")
+            .assertPresent(INVALID_NAME_MSG, "friends[2]${s}name")
+            .assertPresent(INVALID_AGE_MSG, "friends[2]${s}age")
+            .assertPresent(INVALID_EMAIL_MSG, "friends[2]${s}email")
+            .assertPresent(INVALID_STREET_MSG, "friends[2]${s}address${s}street")
+            .assertPresent(INVALID_CITY_MSG, "friends[2]${s}address${s}city")
+            .assertPresent(INVALID_ZIP_MSG, "friends[2]${s}address${s}zip")
+            .assertPresent(INVALID_AGE_MSG, "friends[2]${s}friends[0]${s}age")
+            .assertPresent(InhabitantsCorrectAddress.MSG, "friends[2]${s}address")
+            .assertPresent(INVALID_NAME_MSG, "friends[2]${s}address${s}inhabitants[1]${s}name")
+            .assertPresent(INVALID_NAME_MSG, "friends[2]${s}mappedFriends${s}keys[$INVALID_NAME]${s}name")
+            .assertPresent(INVALID_AGE_MSG, "friends[2]${s}mappedFriends${s}keys[$INVALID_NAME]${s}age")
+            .assertPresent(INVALID_EMAIL_MSG, "friends[2]${s}mappedFriends${s}keys[$INVALID_NAME]${s}email")
+            .assertPresent(
+                INVALID_STREET_MSG,
+                "friends[2]${s}mappedFriends${s}keys[$INVALID_NAME]${s}address${s}street"
+            )
+            .assertPresent(INVALID_CITY_MSG, "friends[2]${s}mappedFriends${s}keys[$INVALID_NAME]${s}address${s}city")
+            .assertPresent(INVALID_ZIP_MSG, "friends[2]${s}mappedFriends${s}keys[$INVALID_NAME]${s}address${s}zip")
+            .assertPresent(INVALID_NAME_MSG, "friends[2]${s}mappedFriends[$INVALID_NAME]${s}name")
+            .assertPresent(INVALID_AGE_MSG, "friends[2]${s}mappedFriends[$INVALID_NAME]${s}age")
+            .assertPresent(INVALID_EMAIL_MSG, "friends[2]${s}mappedFriends[$INVALID_NAME]${s}email")
+            .assertPresent(INVALID_STREET_MSG, "friends[2]${s}mappedFriends[$INVALID_NAME]${s}address${s}street")
+            .assertPresent(INVALID_CITY_MSG, "friends[2]${s}mappedFriends[$INVALID_NAME]${s}address${s}city")
+            .assertPresent(INVALID_ZIP_MSG, "friends[2]${s}mappedFriends[$INVALID_NAME]${s}address${s}zip")
 
-        assertTrue(violations.any { it.path == "friends[0]${s}age" && it.message == INVALID_AGE_MSG })
-        assertTrue(violations.any { it.path == "friends[1]${s}age" && it.message == INVALID_AGE_MSG })
-
-        assertTrue(violations.any { it.path == "friends[2]${s}name" && it.message == INVALID_NAME_MSG })
-        assertTrue(violations.any { it.path == "friends[2]${s}age" && it.message == INVALID_AGE_MSG })
-        assertTrue(violations.any { it.path == "friends[2]${s}email" && it.message == INVALID_EMAIL_MSG })
-        assertTrue(violations.any { it.path == "friends[2]${s}address${s}street" && it.message == INVALID_STREET_MSG })
-        assertTrue(violations.any { it.path == "friends[2]${s}address${s}city" && it.message == INVALID_CITY_MSG })
-        assertTrue(violations.any { it.path == "friends[2]${s}address${s}zip" && it.message == INVALID_ZIP_MSG })
-
-        assertTrue(violations.any { it.path == "friends[2]${s}friends[0]${s}age" && it.message == INVALID_AGE_MSG })
-        assertTrue(violations.none { it.path == "friends[2]" && it.message == OlderThanFriends.MSG })
-
-        assertTrue(violations.any { it.path == "friends[2]${s}address" && it.message == InhabitantsCorrectAddress.MSG })
-        assertTrue(violations.any { it.path == "friends[2]${s}address${s}inhabitants[1]${s}name" && it.message == INVALID_NAME_MSG })
-
-        assertTrue(violations.any { it.path == "friends[2]${s}mappedFriends${s}keys[$INVALID_NAME]${s}name" && it.message == INVALID_NAME_MSG })
-        assertTrue(violations.any { it.path == "friends[2]${s}mappedFriends${s}keys[$INVALID_NAME]${s}age" && it.message == INVALID_AGE_MSG })
-        assertTrue(violations.any { it.path == "friends[2]${s}mappedFriends${s}keys[$INVALID_NAME]${s}email" && it.message == INVALID_EMAIL_MSG })
-        assertTrue(violations.any { it.path == "friends[2]${s}mappedFriends${s}keys[$INVALID_NAME]${s}address${s}street" && it.message == INVALID_STREET_MSG })
-        assertTrue(violations.any { it.path == "friends[2]${s}mappedFriends${s}keys[$INVALID_NAME]${s}address${s}city" && it.message == INVALID_CITY_MSG })
-        assertTrue(violations.any { it.path == "friends[2]${s}mappedFriends${s}keys[$INVALID_NAME]${s}address${s}zip" && it.message == INVALID_ZIP_MSG })
-        assertTrue(violations.any { it.path == "friends[2]${s}mappedFriends[$INVALID_NAME]${s}name" && it.message == INVALID_NAME_MSG })
-        assertTrue(violations.any { it.path == "friends[2]${s}mappedFriends[$INVALID_NAME]${s}age" && it.message == INVALID_AGE_MSG })
-        assertTrue(violations.any { it.path == "friends[2]${s}mappedFriends[$INVALID_NAME]${s}email" && it.message == INVALID_EMAIL_MSG })
-        assertTrue(violations.any { it.path == "friends[2]${s}mappedFriends[$INVALID_NAME]${s}address${s}street" && it.message == INVALID_STREET_MSG })
-        assertTrue(violations.any { it.path == "friends[2]${s}mappedFriends[$INVALID_NAME]${s}address${s}city" && it.message == INVALID_CITY_MSG })
-        assertTrue(violations.any { it.path == "friends[2]${s}mappedFriends[$INVALID_NAME]${s}address${s}zip" && it.message == INVALID_ZIP_MSG })
+            .assertNotPresent(OlderThanFriends.MSG, "friends[2]")
     }
 
     @Test
     fun testValidateValidPerson() {
-        val person = validPersonSimple()
-        val validazor = createValidazor().build()
-
-        val violations = validazor.validate(person)
-
+        val validazor = validazor().build()
+        val violations = validazor.validate(validPersonSimple())
         assertTrue(violations.isEmpty())
     }
 
     @Test
     fun testValidateInvalidPerson() {
         val person = invalidPersonDeep()
-        val validazor = createValidazor().build()
+        val validazor = validazor().build()
 
         val violations = validazor.validate(person)
         assertViolationsCorrectForInvalidPersonDeep(violations, PropertyPath.DEFAULT_PATH_SEPARATOR)
@@ -130,7 +126,7 @@ class ValidazorTest {
     fun testValidateInvalidPersonWithCustomSeparator() {
         val separator = "|"
         val person = invalidPersonDeep()
-        val validazor = createValidazor()
+        val validazor = validazor()
             .pathSeparator(separator)
             .build()
 
@@ -142,7 +138,7 @@ class ValidazorTest {
     fun testValidateInvalidPersonWithLongCustomSeparator() {
         val separator = "--->"
         val person = invalidPersonDeep()
-        val validazor = createValidazor()
+        val validazor = validazor()
             .pathSeparator(separator)
             .build()
 
@@ -153,7 +149,7 @@ class ValidazorTest {
     @Test
     fun testAssertValidValidPerson() {
         val person = validPersonSimple()
-        val validazor = createValidazor().build()
+        val validazor = validazor().build()
 
         try {
             validazor.assertValid(person)
@@ -165,7 +161,7 @@ class ValidazorTest {
     @Test
     fun testAssertValidInvalidPerson() {
         val person = invalidPersonDeep()
-        val validazor = createValidazor().build()
+        val validazor = validazor().build()
 
         try {
             validazor.assertValid(person)
@@ -180,14 +176,14 @@ class ValidazorTest {
     @Test
     fun testIsValidValidPerson() {
         val person = validPersonSimple()
-        val validazor = createValidazor().build()
+        val validazor = validazor().build()
         assertTrue(validazor.isValid(person))
     }
 
     @Test
     fun testIsValidInvalidPerson() {
         val person = invalidPersonDeep()
-        val validazor = createValidazor().build()
+        val validazor = validazor().build()
         assertFalse(validazor.isValid(person))
     }
 }
