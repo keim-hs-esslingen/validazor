@@ -1,8 +1,10 @@
 package de.hsesslingen.keim.validazor.constraints.jakarta
 
 import de.hsesslingen.keim.validazor.NowContext
+import de.hsesslingen.keim.validazor.constraints.jakarta.test.assertMessage
 import de.hsesslingen.keim.validazor.constraints.jakarta.test.assertValid
 import de.hsesslingen.keim.validazor.constraints.jakarta.test.datatestclasses.TemporalData
+import de.hsesslingen.keim.validazor.constraints.jakarta.test.validate
 import org.junit.jupiter.api.Test
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -192,5 +194,331 @@ class TemporalTest {
             ),
             nowContext = now
         )
+    }
+
+    @Test
+    fun testInvalid() {
+        val (future, now, past) = getFutureNowPast()
+
+        // Give past values to future properties and vice versa.
+        val violations = validate(
+            TemporalData(
+                futureDateValue = past.asDate,
+                futureOrPresentDateValue = past.asDate,
+                pastDateValue = future.asDate,
+                pastOrPresentDateValue = future.asDate,
+
+                futureCalendarValue = past.asCalendar,
+                futureOrPresentCalendarValue = past.asCalendar,
+                pastCalendarValue = future.asCalendar,
+                pastOrPresentCalendarValue = future.asCalendar,
+
+                futureInstantValue = past.asInstant,
+                futureOrPresentInstantValue = past.asInstant,
+                pastInstantValue = future.asInstant,
+                pastOrPresentInstantValue = future.asInstant,
+
+                futureLocalDateValue = past.asLocalDate,
+                futureOrPresentLocalDateValue = past.asLocalDate,
+                pastLocalDateValue = future.asLocalDate,
+                pastOrPresentLocalDateValue = future.asLocalDate,
+
+                futureLocalTimeValue = past.asLocalTime,
+                futureOrPresentLocalTimeValue = past.asLocalTime,
+                pastLocalTimeValue = future.asLocalTime,
+                pastOrPresentLocalTimeValue = future.asLocalTime,
+
+                futureLocalDateTimeValue = past.asLocalDateTime,
+                futureOrPresentLocalDateTimeValue = past.asLocalDateTime,
+                pastLocalDateTimeValue = future.asLocalDateTime,
+                pastOrPresentLocalDateTimeValue = future.asLocalDateTime,
+
+                futureOffsetTimeValue = past.asOffsetTime,
+                futureOrPresentOffsetTimeValue = past.asOffsetTime,
+                pastOffsetTimeValue = future.asOffsetTime,
+                pastOrPresentOffsetTimeValue = future.asOffsetTime,
+
+                futureOffsetDateTimeValue = past.asOffsetDateTime,
+                futureOrPresentOffsetDateTimeValue = past.asOffsetDateTime,
+                pastOffsetDateTimeValue = future.asOffsetDateTime,
+                pastOrPresentOffsetDateTimeValue = future.asOffsetDateTime,
+
+                futureZonedDateTimeValue = past.asZonedDateTime,
+                futureOrPresentZonedDateTimeValue = past.asZonedDateTime,
+                pastZonedDateTimeValue = future.asZonedDateTime,
+                pastOrPresentZonedDateTimeValue = future.asZonedDateTime,
+
+                futureYearValue = past.asYear,
+                futureOrPresentYearValue = past.asYear,
+                pastYearValue = future.asYear,
+                pastOrPresentYearValue = future.asYear,
+
+                futureYearMonthValue = past.asYearMonth,
+                futureOrPresentYearMonthValue = past.asYearMonth,
+                pastYearMonthValue = future.asYearMonth,
+                pastOrPresentYearMonthValue = future.asYearMonth,
+
+                futureMonthDayValue = past.asMonthDay,
+                futureOrPresentMonthDayValue = past.asMonthDay,
+                pastMonthDayValue = future.asMonthDay,
+                pastOrPresentMonthDayValue = future.asMonthDay,
+
+                futureHijrahDateValue = past.asHijrahDate,
+                futureOrPresentHijrahDateValue = past.asHijrahDate,
+                pastHijrahDateValue = future.asHijrahDate,
+                pastOrPresentHijrahDateValue = future.asHijrahDate,
+
+                futureJapaneseDateValue = past.asJapaneseDate,
+                futureOrPresentJapaneseDateValue = past.asJapaneseDate,
+                pastJapaneseDateValue = future.asJapaneseDate,
+                pastOrPresentJapaneseDateValue = future.asJapaneseDate,
+
+                futureMinguoDateValue = past.asMinguoDate,
+                futureOrPresentMinguoDateValue = past.asMinguoDate,
+                pastMinguoDateValue = future.asMinguoDate,
+                pastOrPresentMinguoDateValue = future.asMinguoDate,
+
+                futureThaiBuddhistDateValue = past.asThaiBuddhistDate,
+                futureOrPresentThaiBuddhistDateValue = past.asThaiBuddhistDate,
+                pastThaiBuddhistDateValue = future.asThaiBuddhistDate,
+                pastOrPresentThaiBuddhistDateValue = future.asThaiBuddhistDate,
+            ),
+            nowContext = now
+        )
+
+        violations.assertMessage("must be in past")
+            .presentFor("pastDateValue")
+            .presentFor("pastCalendarValue")
+            .presentFor("pastInstantValue")
+            .presentFor("pastLocalDateValue")
+            .presentFor("pastLocalTimeValue")
+            .presentFor("pastLocalDateTimeValue")
+            .presentFor("pastOffsetTimeValue")
+            .presentFor("pastOffsetDateTimeValue")
+            .presentFor("pastZonedDateTimeValue")
+            .presentFor("pastYearValue")
+            .presentFor("pastYearMonthValue")
+            .presentFor("pastMonthDayValue")
+            .presentFor("pastHijrahDateValue")
+            .presentFor("pastJapaneseDateValue")
+            .presentFor("pastMinguoDateValue")
+            .presentFor("pastThaiBuddhistDateValue")
+
+        violations.assertMessage("must be in past or present")
+            .presentFor("pastOrPresentDateValue")
+            .presentFor("pastOrPresentCalendarValue")
+            .presentFor("pastOrPresentInstantValue")
+            .presentFor("pastOrPresentLocalDateValue")
+            .presentFor("pastOrPresentLocalTimeValue")
+            .presentFor("pastOrPresentLocalDateTimeValue")
+            .presentFor("pastOrPresentOffsetTimeValue")
+            .presentFor("pastOrPresentOffsetDateTimeValue")
+            .presentFor("pastOrPresentZonedDateTimeValue")
+            .presentFor("pastOrPresentYearValue")
+            .presentFor("pastOrPresentYearMonthValue")
+            .presentFor("pastOrPresentMonthDayValue")
+            .presentFor("pastOrPresentHijrahDateValue")
+            .presentFor("pastOrPresentJapaneseDateValue")
+            .presentFor("pastOrPresentMinguoDateValue")
+            .presentFor("pastOrPresentThaiBuddhistDateValue")
+
+        violations.assertMessage("must be in future or present")
+            .presentFor("futureOrPresentDateValue")
+            .presentFor("futureOrPresentCalendarValue")
+            .presentFor("futureOrPresentInstantValue")
+            .presentFor("futureOrPresentLocalDateValue")
+            .presentFor("futureOrPresentLocalTimeValue")
+            .presentFor("futureOrPresentLocalDateTimeValue")
+            .presentFor("futureOrPresentOffsetTimeValue")
+            .presentFor("futureOrPresentOffsetDateTimeValue")
+            .presentFor("futureOrPresentZonedDateTimeValue")
+            .presentFor("futureOrPresentYearValue")
+            .presentFor("futureOrPresentYearMonthValue")
+            .presentFor("futureOrPresentMonthDayValue")
+            .presentFor("futureOrPresentHijrahDateValue")
+            .presentFor("futureOrPresentJapaneseDateValue")
+            .presentFor("futureOrPresentMinguoDateValue")
+            .presentFor("futureOrPresentThaiBuddhistDateValue")
+
+        violations.assertMessage("must be in future")
+            .presentFor("futureDateValue")
+            .presentFor("futureCalendarValue")
+            .presentFor("futureInstantValue")
+            .presentFor("futureLocalDateValue")
+            .presentFor("futureLocalTimeValue")
+            .presentFor("futureLocalDateTimeValue")
+            .presentFor("futureOffsetTimeValue")
+            .presentFor("futureOffsetDateTimeValue")
+            .presentFor("futureZonedDateTimeValue")
+            .presentFor("futureYearValue")
+            .presentFor("futureYearMonthValue")
+            .presentFor("futureMonthDayValue")
+            .presentFor("futureHijrahDateValue")
+            .presentFor("futureJapaneseDateValue")
+            .presentFor("futureMinguoDateValue")
+            .presentFor("futureThaiBuddhistDateValue")
+    }
+
+    @Test
+    fun testInvalidWithPresentValues() {
+        val (future, now, past) = getFutureNowPast()
+
+        // Give past values to future properties and vice versa.
+        val violations = validate(
+            TemporalData(
+                futureDateValue = now.asDate,
+                futureOrPresentDateValue = now.asDate,
+                pastDateValue = now.asDate,
+                pastOrPresentDateValue = now.asDate,
+
+                futureCalendarValue = now.asCalendar,
+                futureOrPresentCalendarValue = now.asCalendar,
+                pastCalendarValue = now.asCalendar,
+                pastOrPresentCalendarValue = now.asCalendar,
+
+                futureInstantValue = now.asInstant,
+                futureOrPresentInstantValue = now.asInstant,
+                pastInstantValue = now.asInstant,
+                pastOrPresentInstantValue = now.asInstant,
+
+                futureLocalDateValue = now.asLocalDate,
+                futureOrPresentLocalDateValue = now.asLocalDate,
+                pastLocalDateValue = now.asLocalDate,
+                pastOrPresentLocalDateValue = now.asLocalDate,
+
+                futureLocalTimeValue = now.asLocalTime,
+                futureOrPresentLocalTimeValue = now.asLocalTime,
+                pastLocalTimeValue = now.asLocalTime,
+                pastOrPresentLocalTimeValue = now.asLocalTime,
+
+                futureLocalDateTimeValue = now.asLocalDateTime,
+                futureOrPresentLocalDateTimeValue = now.asLocalDateTime,
+                pastLocalDateTimeValue = now.asLocalDateTime,
+                pastOrPresentLocalDateTimeValue = now.asLocalDateTime,
+
+                futureOffsetTimeValue = now.asOffsetTime,
+                futureOrPresentOffsetTimeValue = now.asOffsetTime,
+                pastOffsetTimeValue = now.asOffsetTime,
+                pastOrPresentOffsetTimeValue = now.asOffsetTime,
+
+                futureOffsetDateTimeValue = now.asOffsetDateTime,
+                futureOrPresentOffsetDateTimeValue = now.asOffsetDateTime,
+                pastOffsetDateTimeValue = now.asOffsetDateTime,
+                pastOrPresentOffsetDateTimeValue = now.asOffsetDateTime,
+
+                futureZonedDateTimeValue = now.asZonedDateTime,
+                futureOrPresentZonedDateTimeValue = now.asZonedDateTime,
+                pastZonedDateTimeValue = now.asZonedDateTime,
+                pastOrPresentZonedDateTimeValue = now.asZonedDateTime,
+
+                futureYearValue = now.asYear,
+                futureOrPresentYearValue = now.asYear,
+                pastYearValue = now.asYear,
+                pastOrPresentYearValue = now.asYear,
+
+                futureYearMonthValue = now.asYearMonth,
+                futureOrPresentYearMonthValue = now.asYearMonth,
+                pastYearMonthValue = now.asYearMonth,
+                pastOrPresentYearMonthValue = now.asYearMonth,
+
+                futureMonthDayValue = now.asMonthDay,
+                futureOrPresentMonthDayValue = now.asMonthDay,
+                pastMonthDayValue = now.asMonthDay,
+                pastOrPresentMonthDayValue = now.asMonthDay,
+
+                futureHijrahDateValue = now.asHijrahDate,
+                futureOrPresentHijrahDateValue = now.asHijrahDate,
+                pastHijrahDateValue = now.asHijrahDate,
+                pastOrPresentHijrahDateValue = now.asHijrahDate,
+
+                futureJapaneseDateValue = now.asJapaneseDate,
+                futureOrPresentJapaneseDateValue = now.asJapaneseDate,
+                pastJapaneseDateValue = now.asJapaneseDate,
+                pastOrPresentJapaneseDateValue = now.asJapaneseDate,
+
+                futureMinguoDateValue = now.asMinguoDate,
+                futureOrPresentMinguoDateValue = now.asMinguoDate,
+                pastMinguoDateValue = now.asMinguoDate,
+                pastOrPresentMinguoDateValue = now.asMinguoDate,
+
+                futureThaiBuddhistDateValue = now.asThaiBuddhistDate,
+                futureOrPresentThaiBuddhistDateValue = now.asThaiBuddhistDate,
+                pastThaiBuddhistDateValue = now.asThaiBuddhistDate,
+                pastOrPresentThaiBuddhistDateValue = now.asThaiBuddhistDate,
+            ),
+            nowContext = now
+        )
+
+        violations.assertMessage("must be in past")
+            .presentFor("pastDateValue")
+            .presentFor("pastCalendarValue")
+            .presentFor("pastInstantValue")
+            .presentFor("pastLocalDateValue")
+            .presentFor("pastLocalTimeValue")
+            .presentFor("pastLocalDateTimeValue")
+            .presentFor("pastOffsetTimeValue")
+            .presentFor("pastOffsetDateTimeValue")
+            .presentFor("pastZonedDateTimeValue")
+            .presentFor("pastYearValue")
+            .presentFor("pastYearMonthValue")
+            .presentFor("pastMonthDayValue")
+            .presentFor("pastHijrahDateValue")
+            .presentFor("pastJapaneseDateValue")
+            .presentFor("pastMinguoDateValue")
+            .presentFor("pastThaiBuddhistDateValue")
+
+        violations.assertMessage("must be in past or present")
+            .notPresentFor("pastOrPresentDateValue")
+            .notPresentFor("pastOrPresentCalendarValue")
+            .notPresentFor("pastOrPresentInstantValue")
+            .notPresentFor("pastOrPresentLocalDateValue")
+            .notPresentFor("pastOrPresentLocalTimeValue")
+            .notPresentFor("pastOrPresentLocalDateTimeValue")
+            .notPresentFor("pastOrPresentOffsetTimeValue")
+            .notPresentFor("pastOrPresentOffsetDateTimeValue")
+            .notPresentFor("pastOrPresentZonedDateTimeValue")
+            .notPresentFor("pastOrPresentYearValue")
+            .notPresentFor("pastOrPresentYearMonthValue")
+            .notPresentFor("pastOrPresentMonthDayValue")
+            .notPresentFor("pastOrPresentHijrahDateValue")
+            .notPresentFor("pastOrPresentJapaneseDateValue")
+            .notPresentFor("pastOrPresentMinguoDateValue")
+            .notPresentFor("pastOrPresentThaiBuddhistDateValue")
+
+        violations.assertMessage("must be in future or present")
+            .notPresentFor("futureOrPresentDateValue")
+            .notPresentFor("futureOrPresentCalendarValue")
+            .notPresentFor("futureOrPresentInstantValue")
+            .notPresentFor("futureOrPresentLocalDateValue")
+            .notPresentFor("futureOrPresentLocalTimeValue")
+            .notPresentFor("futureOrPresentLocalDateTimeValue")
+            .notPresentFor("futureOrPresentOffsetTimeValue")
+            .notPresentFor("futureOrPresentOffsetDateTimeValue")
+            .notPresentFor("futureOrPresentZonedDateTimeValue")
+            .notPresentFor("futureOrPresentYearValue")
+            .notPresentFor("futureOrPresentYearMonthValue")
+            .notPresentFor("futureOrPresentMonthDayValue")
+            .notPresentFor("futureOrPresentHijrahDateValue")
+            .notPresentFor("futureOrPresentJapaneseDateValue")
+            .notPresentFor("futureOrPresentMinguoDateValue")
+            .notPresentFor("futureOrPresentThaiBuddhistDateValue")
+
+        violations.assertMessage("must be in future")
+            .presentFor("futureDateValue")
+            .presentFor("futureCalendarValue")
+            .presentFor("futureInstantValue")
+            .presentFor("futureLocalDateValue")
+            .presentFor("futureLocalTimeValue")
+            .presentFor("futureLocalDateTimeValue")
+            .presentFor("futureOffsetTimeValue")
+            .presentFor("futureOffsetDateTimeValue")
+            .presentFor("futureZonedDateTimeValue")
+            .presentFor("futureYearValue")
+            .presentFor("futureYearMonthValue")
+            .presentFor("futureMonthDayValue")
+            .presentFor("futureHijrahDateValue")
+            .presentFor("futureJapaneseDateValue")
+            .presentFor("futureMinguoDateValue")
+            .presentFor("futureThaiBuddhistDateValue")
     }
 }

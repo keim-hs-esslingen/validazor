@@ -1,6 +1,6 @@
 package de.hsesslingen.keim.validazor
 
-import de.hsesslingen.keim.validazor.NowContext.Companion.fromZonedDateTimeNow
+import de.hsesslingen.keim.validazor.NowContext.Companion.fromSystemNow
 import de.hsesslingen.keim.validazor.Validazor.Builder
 import java.lang.reflect.Field
 
@@ -70,9 +70,9 @@ class Validazor private constructor(
      * If the resulting [Set] of [Violation]s is *not* empty, [instance] must be considered invalid.
      *
      * @param instance The object that is to be validated.
-     * @param nowContext See [NowContext] for more information. Uses [NowContext.fromZonedDateTimeNow] as default value.
+     * @param nowContext See [NowContext] for more information. Uses [NowContext.fromSystemNow] as default value.
      */
-    fun validate(instance: Any, nowContext: NowContext = fromZonedDateTimeNow()): List<Violation> {
+    fun validate(instance: Any, nowContext: NowContext = fromSystemNow()): List<Violation> {
         val violations = ArrayList<Violation>()
 
         val tracker = object : ViolationTracker {
@@ -97,11 +97,11 @@ class Validazor private constructor(
      * If [instance] is invalid, a [ViolationException] is thrown, containing all the [Violation]s found.
      *
      * @param instance The object that is to be validated.
-     * @param nowContext See [NowContext] for more information. Uses [NowContext.fromZonedDateTimeNow] as default value.
+     * @param nowContext See [NowContext] for more information. Uses [NowContext.fromSystemNow] as default value.
      * @throws ViolationException if instance is invalid.
      */
     @Throws(ViolationException::class)
-    fun assertValid(instance: Any, nowContext: NowContext = fromZonedDateTimeNow()) {
+    fun assertValid(instance: Any, nowContext: NowContext = fromSystemNow()) {
         val violations = validate(instance, nowContext)
 
         if (violations.isNotEmpty()) {
@@ -113,10 +113,10 @@ class Validazor private constructor(
      * Validates the given [instance] using the registered [ConstraintValidazor]s.
      *
      * @param instance The object that is to be validated.
-     * @param nowContext See [NowContext] for more information. Uses [NowContext.fromZonedDateTimeNow] as default value.
+     * @param nowContext See [NowContext] for more information. Uses [NowContext.fromSystemNow] as default value.
      * @return `true` if [instance] is valid, `false` if [instance] is invalid.
      */
-    fun isValid(instance: Any, nowContext: NowContext = fromZonedDateTimeNow()): Boolean {
+    fun isValid(instance: Any, nowContext: NowContext = fromSystemNow()): Boolean {
         val violations = validate(instance, nowContext)
         return violations.isEmpty()
     }

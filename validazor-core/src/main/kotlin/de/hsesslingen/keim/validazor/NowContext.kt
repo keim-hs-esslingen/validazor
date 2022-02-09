@@ -93,7 +93,7 @@ open class NowContext(
          * This might not be valid for all validation scenarios and can lead to false violation detections
          * if local time values from other time zones than this JVM are compared against the current moment in time.
          */
-        fun fromZonedDateTimeNow(): NowContext {
+        fun fromSystemNow(): NowContext {
             return NowContext(ZonedDateTime.now())
         }
     }

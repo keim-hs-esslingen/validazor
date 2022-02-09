@@ -6,6 +6,10 @@ import de.hsesslingen.keim.validazor.PropertyPath
 import de.hsesslingen.keim.validazor.ViolationCollector
 import jakarta.validation.constraints.FutureOrPresent
 import java.time.*
+import java.time.chrono.HijrahDate
+import java.time.chrono.JapaneseDate
+import java.time.chrono.MinguoDate
+import java.time.chrono.ThaiBuddhistDate
 import java.util.*
 
 /**
@@ -33,6 +37,10 @@ class FutureOrPresentValidazor : ConstraintValidazor<FutureOrPresent> {
                 is YearMonth -> !value.isBefore(now.asYearMonth)
                 is Month -> value.value >= now.asMonth.value
                 is MonthDay -> !value.isBefore(now.asMonthDay)
+                is HijrahDate -> !value.isBefore(now.asHijrahDate)
+                is MinguoDate -> !value.isBefore(now.asMinguoDate)
+                is JapaneseDate -> !value.isBefore(now.asJapaneseDate)
+                is ThaiBuddhistDate -> !value.isBefore(now.asThaiBuddhistDate)
                 // Use converted values for Date and Calendar to account for differences in implementation to java.time.*
                 is Date -> value.time >= now.asDate.time
                 is Calendar -> value.timeInMillis >= now.asCalendar.timeInMillis
