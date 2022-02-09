@@ -1,5 +1,6 @@
 package de.hsesslingen.keim.validazor.constraints.jakarta.test
 
+import de.hsesslingen.keim.validazor.NowContext
 import de.hsesslingen.keim.validazor.Validazor
 import de.hsesslingen.keim.validazor.Violation
 import de.hsesslingen.keim.validazor.constraints.jakarta.JakartaValidationModule
@@ -15,8 +16,8 @@ fun validate(obj: Any): List<Violation> {
     return validazor().validate(obj)
 }
 
-fun assertValid(obj: Any) {
-    validazor().assertValid(obj)
+fun assertValid(obj: Any, nowContext: NowContext = NowContext.fromZonedDateTimeNow()) {
+    validazor().assertValid(obj, nowContext)
 }
 
 fun <C : Collection<Violation>> C.assertPresent(message: String, `for path`: String): C {

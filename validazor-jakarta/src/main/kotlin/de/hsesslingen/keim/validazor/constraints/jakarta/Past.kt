@@ -1,6 +1,7 @@
 package de.hsesslingen.keim.validazor.constraints.jakarta
 
 import de.hsesslingen.keim.validazor.ConstraintValidazor
+import de.hsesslingen.keim.validazor.NowContext
 import de.hsesslingen.keim.validazor.PropertyPath
 import de.hsesslingen.keim.validazor.ViolationCollector
 import jakarta.validation.constraints.Past
@@ -16,22 +17,25 @@ class PastValidazor : ConstraintValidazor<Past> {
         value: Any?,
         path: PropertyPath,
         violations: ViolationCollector,
-        returnOnFirstViolation: Boolean
+        returnOnFirstViolation: Boolean,
+        now: NowContext
     ) {
         checkConstraint("must be in past", path, constraint, violations) {
             when (value) {
-                is Instant -> value.isBefore(Instant.now())
-                is LocalTime -> value.isBefore(LocalTime.now())
-                is LocalDateTime -> value.isBefore(LocalDateTime.now())
-                is LocalDate -> value.isBefore(LocalDate.now())
-                is OffsetDateTime -> value.isBefore(OffsetDateTime.now())
-                is OffsetTime -> value.isBefore(OffsetTime.now())
-                is ZonedDateTime -> value.isBefore(ZonedDateTime.now())
-                is Year -> value.isBefore(Year.now())
-                is YearMonth -> value.isBefore(YearMonth.now())
-                is MonthDay -> value.isBefore(MonthDay.now())
-                is Date -> value.time < Date().time
-                is Calendar -> value.timeInMillis < Calendar.getInstance().timeInMillis
+                is Instant -> value.isBefore(now.asInstant)
+                is LocalTime -> value.isBefore(now.asLocalTime)
+                is LocalDateTime -> value.isBefore(now.asLocalDateTime)
+                is LocalDate -> value.isBefore(now.asLocalDate)
+                is OffsetDateTime -> value.isBefore(now.asOffsetDateTime)
+                is OffsetTime -> value.isBefore(now.asOffsetTime)
+                is ZonedDateTime -> value.isBefore(now.asZonedDateTime)
+                is Year -> value.isBefore(now.asYear)
+                is YearMonth -> value.isBefore(now.asYearMonth)
+                is Month -> value.value < now.asMonth.value
+                is MonthDay -> value.isBefore(now.asMonthDay)
+                // Use converted values for Date and Calendar to account for differences in implementation to java.time.*
+                is Date -> value.time < now.asDate.time
+                is Calendar -> value.timeInMillis < now.asCalendar.timeInMillis
                 else -> true
             }
         }

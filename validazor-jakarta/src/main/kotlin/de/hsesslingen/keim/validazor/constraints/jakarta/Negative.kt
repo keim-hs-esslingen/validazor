@@ -1,6 +1,7 @@
 package de.hsesslingen.keim.validazor.constraints.jakarta
 
 import de.hsesslingen.keim.validazor.ConstraintValidazor
+import de.hsesslingen.keim.validazor.NowContext
 import de.hsesslingen.keim.validazor.PropertyPath
 import de.hsesslingen.keim.validazor.ViolationCollector
 import jakarta.validation.constraints.Negative
@@ -16,7 +17,8 @@ class NegativeValidazor : ConstraintValidazor<Negative> {
         value: Any?,
         path: PropertyPath,
         violations: ViolationCollector,
-        returnOnFirstViolation: Boolean
+        returnOnFirstViolation: Boolean,
+        now: NowContext
     ) {
         checkConstraint("must be less than zero", path, constraint, violations) {
             when (value) {

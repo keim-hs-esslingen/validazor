@@ -1,31 +1,36 @@
 package de.hsesslingen.keim.validazor.constraints.jakarta
 
+import de.hsesslingen.keim.validazor.NowContext
 import de.hsesslingen.keim.validazor.constraints.jakarta.test.assertValid
 import de.hsesslingen.keim.validazor.constraints.jakarta.test.datatestclasses.TemporalData
 import org.junit.jupiter.api.Test
-import java.util.*
-
-fun Date.plusMillis(millis: Long): Date {
-    return Date(this.time + millis)
-}
-
-fun Date.minusMillis(millis: Long): Date {
-    return Date(this.time - millis)
-}
-
-fun Calendar.plusMillis(millis: Long): Calendar {
-    this.add(Calendar.MILLISECOND, millis.toInt())
-    return this
-}
-
-fun Calendar.minusMillis(millis: Long): Calendar {
-    this.add(Calendar.MILLISECOND, -millis.toInt())
-    return this
-}
-
-private const val MANY = 1000000000L
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 class TemporalTest {
+
+    private fun getFutureNowPast(): Triple<NowContext, NowContext, NowContext> {
+        // Choosing a special now context for testing for which each field has a medium value.
+        val nowRef = ZonedDateTime.of(2021, 6, 15, 12, 30, 30, 500000000, ZoneId.of("Z"))
+
+        // Adding something to each field without overflow to produce increased values even if truncated to simpler types.
+        val futureRef = nowRef
+            .plusMinutes(20)
+            .plusHours(1)
+            .plusDays(1)
+            .plusMonths(5)
+            .plusYears(2)
+
+        // Subtracting something from each field without overflow to produce decreased values even if truncated to simpler types.
+        val pastRef = nowRef
+            .minusMinutes(20)
+            .minusHours(1)
+            .minusDays(1)
+            .minusMonths(5)
+            .minusYears(2)
+
+        return Triple(NowContext(futureRef), NowContext(nowRef), NowContext(pastRef))
+    }
 
     @Test
     fun testNullValid() {
@@ -101,88 +106,91 @@ class TemporalTest {
 
     @Test
     fun testValid() {
+        val (future, now, past) = getFutureNowPast()
+
         assertValid(
             TemporalData(
-                futureDateValue = Date().plusMillis(MANY),
-                futureOrPresentDateValue = Date().plusMillis(MANY),
-                pastDateValue = Date().minusMillis(MANY),
-                pastOrPresentDateValue = Date().minusMillis(MANY),
+                futureDateValue = future.asDate,
+                futureOrPresentDateValue = future.asDate,
+                pastDateValue = past.asDate,
+                pastOrPresentDateValue = past.asDate,
 
-                futureCalendarValue = Calendar.getInstance().plusMillis(MANY),
-                futureOrPresentCalendarValue = Calendar.getInstance().plusMillis(MANY),
-                pastCalendarValue = Calendar.getInstance().minusMillis(MANY),
-                pastOrPresentCalendarValue = Calendar.getInstance().minusMillis(MANY),
+                futureCalendarValue = future.asCalendar,
+                futureOrPresentCalendarValue = future.asCalendar,
+                pastCalendarValue = past.asCalendar,
+                pastOrPresentCalendarValue = past.asCalendar,
 
-                futureInstantValue = null,
-                futureOrPresentInstantValue = null,
-                pastInstantValue = null,
-                pastOrPresentInstantValue = null,
+                futureInstantValue = future.asInstant,
+                futureOrPresentInstantValue = future.asInstant,
+                pastInstantValue = past.asInstant,
+                pastOrPresentInstantValue = past.asInstant,
 
-                futureLocalDateValue = null,
-                futureOrPresentLocalDateValue = null,
-                pastLocalDateValue = null,
-                pastOrPresentLocalDateValue = null,
+                futureLocalDateValue = future.asLocalDate,
+                futureOrPresentLocalDateValue = future.asLocalDate,
+                pastLocalDateValue = past.asLocalDate,
+                pastOrPresentLocalDateValue = past.asLocalDate,
 
-                futureLocalTimeValue = null,
-                futureOrPresentLocalTimeValue = null,
-                pastLocalTimeValue = null,
-                pastOrPresentLocalTimeValue = null,
+                futureLocalTimeValue = future.asLocalTime,
+                futureOrPresentLocalTimeValue = future.asLocalTime,
+                pastLocalTimeValue = past.asLocalTime,
+                pastOrPresentLocalTimeValue = past.asLocalTime,
 
-                futureLocalDateTimeValue = null,
-                futureOrPresentLocalDateTimeValue = null,
-                pastLocalDateTimeValue = null,
-                pastOrPresentLocalDateTimeValue = null,
+                futureLocalDateTimeValue = future.asLocalDateTime,
+                futureOrPresentLocalDateTimeValue = future.asLocalDateTime,
+                pastLocalDateTimeValue = past.asLocalDateTime,
+                pastOrPresentLocalDateTimeValue = past.asLocalDateTime,
 
-                futureOffsetTimeValue = null,
-                futureOrPresentOffsetTimeValue = null,
-                pastOffsetTimeValue = null,
-                pastOrPresentOffsetTimeValue = null,
+                futureOffsetTimeValue = future.asOffsetTime,
+                futureOrPresentOffsetTimeValue = future.asOffsetTime,
+                pastOffsetTimeValue = past.asOffsetTime,
+                pastOrPresentOffsetTimeValue = past.asOffsetTime,
 
-                futureOffsetDateTimeValue = null,
-                futureOrPresentOffsetDateTimeValue = null,
-                pastOffsetDateTimeValue = null,
-                pastOrPresentOffsetDateTimeValue = null,
+                futureOffsetDateTimeValue = future.asOffsetDateTime,
+                futureOrPresentOffsetDateTimeValue = future.asOffsetDateTime,
+                pastOffsetDateTimeValue = past.asOffsetDateTime,
+                pastOrPresentOffsetDateTimeValue = past.asOffsetDateTime,
 
-                futureZonedDateTimeValue = null,
-                futureOrPresentZonedDateTimeValue = null,
-                pastZonedDateTimeValue = null,
-                pastOrPresentZonedDateTimeValue = null,
+                futureZonedDateTimeValue = future.asZonedDateTime,
+                futureOrPresentZonedDateTimeValue = future.asZonedDateTime,
+                pastZonedDateTimeValue = past.asZonedDateTime,
+                pastOrPresentZonedDateTimeValue = past.asZonedDateTime,
 
-                futureYearValue = null,
-                futureOrPresentYearValue = null,
-                pastYearValue = null,
-                pastOrPresentYearValue = null,
+                futureYearValue = future.asYear,
+                futureOrPresentYearValue = future.asYear,
+                pastYearValue = past.asYear,
+                pastOrPresentYearValue = past.asYear,
 
-                futureYearMonthValue = null,
-                futureOrPresentYearMonthValue = null,
-                pastYearMonthValue = null,
-                pastOrPresentYearMonthValue = null,
+                futureYearMonthValue = future.asYearMonth,
+                futureOrPresentYearMonthValue = future.asYearMonth,
+                pastYearMonthValue = past.asYearMonth,
+                pastOrPresentYearMonthValue = past.asYearMonth,
 
-                futureMonthDayValue = null,
-                futureOrPresentMonthDayValue = null,
-                pastMonthDayValue = null,
-                pastOrPresentMonthDayValue = null,
+                futureMonthDayValue = future.asMonthDay,
+                futureOrPresentMonthDayValue = future.asMonthDay,
+                pastMonthDayValue = past.asMonthDay,
+                pastOrPresentMonthDayValue = past.asMonthDay,
 
-                futureHijrahDateValue = null,
-                futureOrPresentHijrahDateValue = null,
-                pastHijrahDateValue = null,
-                pastOrPresentHijrahDateValue = null,
+                futureHijrahDateValue = future.asHijrahDate,
+                futureOrPresentHijrahDateValue = future.asHijrahDate,
+                pastHijrahDateValue = past.asHijrahDate,
+                pastOrPresentHijrahDateValue = past.asHijrahDate,
 
-                futureJapaneseDateValue = null,
-                futureOrPresentJapaneseDateValue = null,
-                pastJapaneseDateValue = null,
-                pastOrPresentJapaneseDateValue = null,
+                futureJapaneseDateValue = future.asJapaneseDate,
+                futureOrPresentJapaneseDateValue = future.asJapaneseDate,
+                pastJapaneseDateValue = past.asJapaneseDate,
+                pastOrPresentJapaneseDateValue = past.asJapaneseDate,
 
-                futureMinguoDateValue = null,
-                futureOrPresentMinguoDateValue = null,
-                pastMinguoDateValue = null,
-                pastOrPresentMinguoDateValue = null,
+                futureMinguoDateValue = future.asMinguoDate,
+                futureOrPresentMinguoDateValue = future.asMinguoDate,
+                pastMinguoDateValue = past.asMinguoDate,
+                pastOrPresentMinguoDateValue = past.asMinguoDate,
 
-                futureThaiBuddhistDateValue = null,
-                futureOrPresentThaiBuddhistDateValue = null,
-                pastThaiBuddhistDateValue = null,
-                pastOrPresentThaiBuddhistDateValue = null,
-            )
+                futureThaiBuddhistDateValue = future.asThaiBuddhistDate,
+                futureOrPresentThaiBuddhistDateValue = future.asThaiBuddhistDate,
+                pastThaiBuddhistDateValue = past.asThaiBuddhistDate,
+                pastOrPresentThaiBuddhistDateValue = past.asThaiBuddhistDate,
+            ),
+            nowContext = now
         )
     }
 }

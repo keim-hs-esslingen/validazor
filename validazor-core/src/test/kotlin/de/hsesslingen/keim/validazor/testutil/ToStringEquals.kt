@@ -1,9 +1,6 @@
 package de.hsesslingen.keim.validazor.testutil
 
-import de.hsesslingen.keim.validazor.ConstraintValidazor
-import de.hsesslingen.keim.validazor.PropertyPath
-import de.hsesslingen.keim.validazor.ViolationCollector
-import de.hsesslingen.keim.validazor.toConstraintInfo
+import de.hsesslingen.keim.validazor.*
 
 /**
  * Test constraint for unit tests.
@@ -17,7 +14,8 @@ annotation class ToStringEquals(
             value: Any?,
             path: PropertyPath,
             violations: ViolationCollector,
-            returnOnFirstViolation: Boolean
+            returnOnFirstViolation: Boolean,
+            now: NowContext
         ) {
             when (value) {
                 null -> {}

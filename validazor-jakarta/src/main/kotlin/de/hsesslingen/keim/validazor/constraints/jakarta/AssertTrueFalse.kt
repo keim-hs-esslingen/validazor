@@ -1,6 +1,7 @@
 package de.hsesslingen.keim.validazor.constraints.jakarta
 
 import de.hsesslingen.keim.validazor.ConstraintValidazor
+import de.hsesslingen.keim.validazor.NowContext
 import de.hsesslingen.keim.validazor.PropertyPath
 import de.hsesslingen.keim.validazor.ViolationCollector
 import jakarta.validation.constraints.AssertFalse
@@ -14,7 +15,8 @@ sealed class BooleanValidator<A : Annotation>(
         value: Any?,
         path: PropertyPath,
         violations: ViolationCollector,
-        returnOnFirstViolation: Boolean
+        returnOnFirstViolation: Boolean,
+        now: NowContext
     ) {
         checkConstraint("must be $requiredValue", path, constraint, violations) {
             when (value) {

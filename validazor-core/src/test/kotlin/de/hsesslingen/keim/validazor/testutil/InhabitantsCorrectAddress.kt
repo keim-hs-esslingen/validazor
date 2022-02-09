@@ -1,6 +1,7 @@
 package de.hsesslingen.keim.validazor.testutil
 
 import de.hsesslingen.keim.validazor.ConstraintValidazor
+import de.hsesslingen.keim.validazor.NowContext
 import de.hsesslingen.keim.validazor.PropertyPath
 import de.hsesslingen.keim.validazor.ViolationCollector
 
@@ -11,7 +12,8 @@ annotation class InhabitantsCorrectAddress {
             value: Any?,
             path: PropertyPath,
             violations: ViolationCollector,
-            returnOnFirstViolation: Boolean
+            returnOnFirstViolation: Boolean,
+            now: NowContext
         ) {
             when (value) {
                 null -> {}

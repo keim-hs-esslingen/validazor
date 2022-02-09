@@ -48,6 +48,8 @@ interface ConstraintValidazor<A : Annotation> {
      * @param path The path of the value in the hierarchy of the root object that was sent to a [Validazor] for validation.
      * @param violations An object usable for simple collection of violations.
      * @param returnOnFirstViolation Whether the method should return after finding a first violation.
+     * @param now An object holding references to "now" for various temporal types available in the JVM.
+     * These references should be used if a validation includes the comparison to the current moment in time ("now").
      */
     fun validate(
         constraint: A,
@@ -55,5 +57,6 @@ interface ConstraintValidazor<A : Annotation> {
         path: PropertyPath,
         violations: ViolationCollector,
         returnOnFirstViolation: Boolean,
+        now: NowContext,
     )
 }

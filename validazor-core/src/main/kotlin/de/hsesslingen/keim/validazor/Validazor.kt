@@ -1,5 +1,6 @@
 package de.hsesslingen.keim.validazor
 
+import de.hsesslingen.keim.validazor.NowContext.Companion.fromZonedDateTimeNow
 import de.hsesslingen.keim.validazor.Validazor.Builder
 import java.lang.reflect.Field
 
@@ -67,8 +68,11 @@ class Validazor private constructor(
      *
      * If the resulting [Set] of [Violation]s is empty, [instance] can be considered valid.
      * If the resulting [Set] of [Violation]s is *not* empty, [instance] must be considered invalid.
+     *
+     * @param instance The object that is to be validated.
+     * @param nowContext See [NowContext] for more information. Uses [NowContext.fromZonedDateTimeNow] as default value.
      */
-    fun validate(instance: Any): List<Violation> {
+    fun validate(instance: Any, nowContext: NowContext = fromZonedDateTimeNow()): List<Violation> {
         val violations = ArrayList<Violation>()
 
         val tracker = object : ViolationTracker {
@@ -82,7 +86,7 @@ class Validazor private constructor(
 
         val rootPath = PropertyPath.createRoot(pathSeparator = pathSeparator)
 
-        validate(instance, rootPath, tracker)
+        validate(instance, rootPath, tracker, nowContext)
 
         return violations
     }
@@ -92,11 +96,13 @@ class Validazor private constructor(
      *
      * If [instance] is invalid, a [ViolationException] is thrown, containing all the [Violation]s found.
      *
+     * @param instance The object that is to be validated.
+     * @param nowContext See [NowContext] for more information. Uses [NowContext.fromZonedDateTimeNow] as default value.
      * @throws ViolationException if instance is invalid.
      */
     @Throws(ViolationException::class)
-    fun assertValid(instance: Any) {
-        val violations = validate(instance)
+    fun assertValid(instance: Any, nowContext: NowContext = fromZonedDateTimeNow()) {
+        val violations = validate(instance, nowContext)
 
         if (violations.isNotEmpty()) {
             throw ViolationException(violations)
@@ -106,17 +112,20 @@ class Validazor private constructor(
     /**
      * Validates the given [instance] using the registered [ConstraintValidazor]s.
      *
+     * @param instance The object that is to be validated.
+     * @param nowContext See [NowContext] for more information. Uses [NowContext.fromZonedDateTimeNow] as default value.
      * @return `true` if [instance] is valid, `false` if [instance] is invalid.
      */
-    fun isValid(instance: Any): Boolean {
-        val violations = validate(instance)
+    fun isValid(instance: Any, nowContext: NowContext = fromZonedDateTimeNow()): Boolean {
+        val violations = validate(instance, nowContext)
         return violations.isEmpty()
     }
 
     private fun validate(
         instance: Any?,
         instancePath: PropertyPath,
-        tracker: ViolationTracker
+        tracker: ViolationTracker,
+        nowContext: NowContext
     ): Boolean {
         if (instance == null) {
             return true
@@ -135,15 +144,20 @@ class Validazor private constructor(
         when (instance) {
             is Map<*, *> -> instance.keys
                 .all { key ->
-                    (validate(key, instancePath.child("keys").key(key), tracker) || !stopOnFirstViolation)
-                            && (validate(instance[key], instancePath.key(key), tracker) || !stopOnFirstViolation)
+                    (validate(key, instancePath.child("keys").key(key), tracker, nowContext) || !stopOnFirstViolation)
+                            && (validate(
+                        instance[key],
+                        instancePath.key(key),
+                        tracker,
+                        nowContext
+                    ) || !stopOnFirstViolation)
                 }
 
             is Iterable<*> -> instance.asSequence()
-                .mapIndexed { index, el -> validate(el, instancePath.index(index), tracker) }
+                .mapIndexed { index, el -> validate(el, instancePath.index(index), tracker, nowContext) }
                 .all { isValid -> isValid || !stopOnFirstViolation }
 
-            else -> validateObject(instance, instancePath, tracker)
+            else -> validateObject(instance, instancePath, tracker, nowContext)
         }
 
         return tracker.hasViolations
@@ -152,7 +166,8 @@ class Validazor private constructor(
     private fun validateObject(
         instance: Any,
         instancePath: PropertyPath,
-        tracker: ViolationTracker
+        tracker: ViolationTracker,
+        nowContext: NowContext
     ): Boolean {
         var currentClass: Class<*>? = instance.javaClass
 
@@ -167,7 +182,7 @@ class Validazor private constructor(
         // First validate class level annotations
         classList.asSequence()
             .flatMap { it.annotations.asSequence() }
-            .all { validateValue(instance, instancePath, tracker, it) || !stopOnFirstViolation }
+            .all { validateValue(instance, instancePath, tracker, it, nowContext) || !stopOnFirstViolation }
 
         if (tracker.hasViolations && stopOnFirstViolation) {
             return false
@@ -177,7 +192,7 @@ class Validazor private constructor(
         classList.asSequence()
             .flatMap { it.declaredFields.asSequence() }
             .all {
-                validateField(instance, it, instancePath, tracker) || !stopOnFirstViolation
+                validateField(instance, it, instancePath, tracker, nowContext) || !stopOnFirstViolation
             }
 
         return tracker.hasViolations
@@ -188,6 +203,7 @@ class Validazor private constructor(
         property: Field,
         instancePath: PropertyPath,
         tracker: ViolationTracker,
+        nowContext: NowContext
     ): Boolean {
         if (excludeStaticFields && property.isStatic()) {
             return true
@@ -212,7 +228,7 @@ class Validazor private constructor(
         property.declaredAnnotations.all {
             // Using all together with || !stopOnFirstViolation allows an early exit if stopping is configured
             // and a continuation if stopping is not configured.
-            validateValue(fieldValue, fieldPath, tracker, it) || !stopOnFirstViolation
+            validateValue(fieldValue, fieldPath, tracker, it, nowContext) || !stopOnFirstViolation
         }
 
         if (tracker.hasViolations && stopOnFirstViolation) {
@@ -221,7 +237,7 @@ class Validazor private constructor(
 
         if (fieldValue != null) {
             // Recursively call validation function on every child property.
-            return validate(fieldValue, fieldPath, tracker)
+            return validate(fieldValue, fieldPath, tracker, nowContext)
         }
 
         return true
@@ -231,9 +247,10 @@ class Validazor private constructor(
         value: Any?,
         valuePath: PropertyPath,
         tracker: ViolationTracker,
-        constraint: Annotation
+        constraint: Annotation,
+        nowContext: NowContext
     ): Boolean {
-        getValidatorFor(constraint)?.validate(constraint, value, valuePath, tracker, stopOnFirstViolation)
+        getValidatorFor(constraint)?.validate(constraint, value, valuePath, tracker, stopOnFirstViolation, nowContext)
         return !tracker.hasViolations || !stopOnFirstViolation
     }
 
