@@ -61,7 +61,6 @@ class PropertyPathTest {
         assertEquals("a[2]${s}b${s}x[1]", a_2_b_x_1.toString())
     }
 
-
     @Test
     fun testKey() {
         val root = PropertyPath.createRoot()
@@ -73,10 +72,9 @@ class PropertyPathTest {
         val a_kl = a.key(listOf("l"))
 
         assertEquals("a[0]", a_0.toString())
-        assertEquals("a[\"k\"]", a_kk.toString())
+        assertEquals("a[k]", a_kk.toString())
         assertEquals("a[[l]]", a_kl.toString())
     }
-
 
     @Test
     fun testWhere() {
@@ -87,6 +85,6 @@ class PropertyPathTest {
         val a_yz = a.where("y", "z")
 
         assertEquals("a[where x=5]", a_x5.toString())
-        assertEquals("a[where y=\"z\"]", a_yz.toString())
+        assertEquals("a[where y=z]", a_yz.toString())
     }
 }
