@@ -62,6 +62,7 @@ publishing {
             pom {
                 artifactId = metaArtifactId
                 description.set(metaDescription)
+                name.set(metaName)
                 url.set("https://github.com/keim-hs-esslingen/validazor")
 
                 licenses {
