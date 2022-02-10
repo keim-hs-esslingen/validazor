@@ -11,7 +11,7 @@ import java.math.BigInteger
 /**
  * A [ConstraintValidazor] for the Jakarta [Min] constraint.
  */
-class MinValidazor : ConstraintValidazor<Min> {
+class MinValidator : ConstraintValidazor<Min> {
     override fun validate(
         constraint: Min,
         value: Any?,

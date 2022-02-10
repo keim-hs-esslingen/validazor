@@ -11,7 +11,7 @@ import java.math.BigInteger
 /**
  * A [ConstraintValidazor] for the Jakarta [Digits] constraint.
  */
-class DigitsValidazor : ConstraintValidazor<Digits> {
+class DigitsValidator : ConstraintValidazor<Digits> {
 
     private fun BigDecimal.matchesDigitConstraints(digits: Digits): Boolean {
         return this.matchesDigitConstraints(digits.integer, digits.fraction)

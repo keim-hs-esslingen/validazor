@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Pattern
 /**
  * A [ConstraintValidazor] for the Jakarta [Pattern] constraint.
  */
-class PatternValidazor : ConstraintValidazor<Pattern> {
+class PatternValidator : ConstraintValidazor<Pattern> {
     override fun validate(
         constraint: Pattern,
         value: Any?,

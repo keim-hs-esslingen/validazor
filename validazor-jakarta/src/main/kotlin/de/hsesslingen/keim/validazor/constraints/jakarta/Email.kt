@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Email
 /**
  * A [ConstraintValidazor] for the Jakarta [Email] constraint.
  */
-class EmailValidazor : ConstraintValidazor<Email> {
+class EmailValidator : ConstraintValidazor<Email> {
     override fun validate(
         constraint: Email,
         value: Any?,

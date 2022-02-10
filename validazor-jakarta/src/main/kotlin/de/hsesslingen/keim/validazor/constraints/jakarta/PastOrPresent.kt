@@ -15,7 +15,7 @@ import java.util.*
 /**
  * A [ConstraintValidazor] for the Jakarta [PastOrPresent] constraint.
  */
-class PastOrPresentValidazor : ConstraintValidazor<PastOrPresent> {
+class PastOrPresentValidator : ConstraintValidazor<PastOrPresent> {
     override fun validate(
         constraint: PastOrPresent,
         value: Any?,

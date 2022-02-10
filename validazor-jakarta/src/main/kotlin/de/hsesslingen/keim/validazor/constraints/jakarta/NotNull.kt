@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotNull
 /**
  * A [ConstraintValidazor] for the Jakarta [NotNull] constraint.
  */
-class NotNullValidazor : ConstraintValidazor<NotNull> {
+class NotNullValidator : ConstraintValidazor<NotNull> {
     override fun validate(
         constraint: NotNull,
         value: Any?,

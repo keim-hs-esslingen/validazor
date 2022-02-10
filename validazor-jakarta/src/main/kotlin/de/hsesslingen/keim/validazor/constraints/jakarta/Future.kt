@@ -15,7 +15,7 @@ import java.util.*
 /**
  * A [ConstraintValidazor] for the Jakarta [Future] constraint.
  */
-class FutureValidazor : ConstraintValidazor<Future> {
+class FutureValidator : ConstraintValidazor<Future> {
     override fun validate(
         constraint: Future,
         value: Any?,

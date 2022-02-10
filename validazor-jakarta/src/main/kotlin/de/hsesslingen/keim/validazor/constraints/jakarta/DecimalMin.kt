@@ -11,7 +11,7 @@ import java.math.BigInteger
 /**
  * A [ConstraintValidazor] for the Jakarta [DecimalMin] constraint.
  */
-class DecimalMinValidazor : ConstraintValidazor<DecimalMin> {
+class DecimalMinValidator : ConstraintValidazor<DecimalMin> {
     override fun validate(
         constraint: DecimalMin,
         value: Any?,

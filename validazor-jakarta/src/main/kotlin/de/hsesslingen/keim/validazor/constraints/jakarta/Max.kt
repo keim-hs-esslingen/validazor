@@ -11,7 +11,7 @@ import java.math.BigInteger
 /**
  * A [ConstraintValidazor] for the Jakarta [Max] constraint.
  */
-class MaxValidazor : ConstraintValidazor<Max> {
+class MaxValidator : ConstraintValidazor<Max> {
     override fun validate(
         constraint: Max,
         value: Any?,

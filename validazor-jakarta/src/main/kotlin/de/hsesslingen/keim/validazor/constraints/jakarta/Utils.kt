@@ -19,21 +19,6 @@ fun Array<Pattern.Flag>.merge(): Int {
 }
 
 /**
- * Determines the number of integer digits of this [Double].
- */
-fun Double.integerDigits(): Int {
-    if (this == 0.0 || this.isNaN()) {
-        return 0
-    }
-
-    if (this.isInfinite()) {
-        return Int.MAX_VALUE // As near as we can get to infinity.
-    }
-
-    return ceil(log10(this)).roundToInt()
-}
-
-/**
  * Checks whether this [BigDecimal] matches the given constraints.
  */
 fun BigDecimal.matchesDigitConstraints(maxIntegerDigits: Int, maxFractionDigits: Int): Boolean {

@@ -11,7 +11,7 @@ import java.math.BigInteger
 /**
  * A [ConstraintValidazor] for the Jakarta [DecimalMax] constraint.
  */
-class DecimalMaxValidazor : ConstraintValidazor<DecimalMax> {
+class DecimalMaxValidator : ConstraintValidazor<DecimalMax> {
     override fun validate(
         constraint: DecimalMax,
         value: Any?,

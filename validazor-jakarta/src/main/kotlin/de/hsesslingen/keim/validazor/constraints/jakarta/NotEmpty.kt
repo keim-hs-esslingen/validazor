@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotEmpty
 /**
  * A [ConstraintValidazor] for the Jakarta [NotEmpty] constraint.
  */
-class NotEmptyValidazor : ConstraintValidazor<NotEmpty> {
+class NotEmptyValidator : ConstraintValidazor<NotEmpty> {
     override fun validate(
         constraint: NotEmpty,
         value: Any?,

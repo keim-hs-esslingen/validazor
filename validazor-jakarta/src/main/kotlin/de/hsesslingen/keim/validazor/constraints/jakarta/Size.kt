@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size
 /**
  * A [ConstraintValidazor] for the Jakarta [Size] constraint.
  */
-class SizeValidazor : ConstraintValidazor<Size> {
+class SizeValidator : ConstraintValidazor<Size> {
     override fun validate(
         constraint: Size,
         value: Any?,

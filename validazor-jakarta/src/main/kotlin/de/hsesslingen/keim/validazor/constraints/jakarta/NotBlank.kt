@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotBlank
 /**
  * A [ConstraintValidazor] for the Jakarta [NotBlank] constraint.
  */
-class NotBlankValidazor : ConstraintValidazor<NotBlank> {
+class NotBlankValidator : ConstraintValidazor<NotBlank> {
     override fun validate(
         constraint: NotBlank,
         value: Any?,

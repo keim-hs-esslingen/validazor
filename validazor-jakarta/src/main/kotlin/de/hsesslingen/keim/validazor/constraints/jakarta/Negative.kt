@@ -11,7 +11,7 @@ import java.math.BigInteger
 /**
  * A [ConstraintValidazor] for the Jakarta [Negative] constraint.
  */
-class NegativeValidazor : ConstraintValidazor<Negative> {
+class NegativeValidator : ConstraintValidazor<Negative> {
     override fun validate(
         constraint: Negative,
         value: Any?,
