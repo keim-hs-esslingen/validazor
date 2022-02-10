@@ -115,9 +115,20 @@ import de.hsesslingen.keim.validazor.DefaultValidators.*
 
 fun test() {
     val person = Person("Ben", 29, "anonymous@hs-esslingen.de")
+    
     val validator = getDefaultValidator()
-    val violations = validator.validate(person) // returns List<Violation>
+
+    val violations: List<Violation> = validator.validate(person)
     println(violations)
+
+    // Also available:
+    val isValid = validazor.isValid(data)
+
+    try {
+        validazor.assertValid(data)
+    } catch (ex: ViolationException) {
+        println(ex.violations)
+    }
 }
 ```
 
@@ -129,9 +140,20 @@ import static de.hsesslingen.keim.validazor.DefaultValidators.getDefaultValidato
 class TestValidazor {
     void test() {
         Person person = new Person("Ben", 29, "anonymous@hs-esslingen.de");
+
         Validazor validator = getDefaultValidator();
+
         List<Violation> violations = validator.validate(person);
         System.out.println(violations);
+
+        // Also available:
+        boolean isValid = validazor.isValid(data);
+
+        try {
+            validazor.assertValid(data);
+        } catch (ViolationException ex) {
+            System.out.println(ex.getViolations());
+        }
     }
 }
 ```
