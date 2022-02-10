@@ -10,7 +10,7 @@ import java.util.*
 private val THREAD_MODE: LazyThreadSafetyMode = LazyThreadSafetyMode.NONE
 
 /**
- * This class holds a reference for "now" in various types. These can be used by [ConstraintValidazor]s
+ * This class holds a reference for "now" in various types. These can be used by [ConstraintValidator]s
  * for validating values that must be compared against a reference of "now".
  *
  * The now value can be provided by the initiator of the validation process and should reference the same context

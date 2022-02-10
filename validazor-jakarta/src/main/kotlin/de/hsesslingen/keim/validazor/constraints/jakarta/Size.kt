@@ -1,15 +1,15 @@
 package de.hsesslingen.keim.validazor.constraints.jakarta
 
-import de.hsesslingen.keim.validazor.ConstraintValidazor
+import de.hsesslingen.keim.validazor.ConstraintValidator
 import de.hsesslingen.keim.validazor.NowContext
 import de.hsesslingen.keim.validazor.PropertyPath
 import de.hsesslingen.keim.validazor.ViolationCollector
 import jakarta.validation.constraints.Size
 
 /**
- * A [ConstraintValidazor] for the Jakarta [Size] constraint.
+ * A [ConstraintValidator] for the Jakarta [Size] constraint.
  */
-class SizeValidator : ConstraintValidazor<Size> {
+class SizeValidator : ConstraintValidator<Size> {
     override fun validate(
         constraint: Size,
         value: Any?,

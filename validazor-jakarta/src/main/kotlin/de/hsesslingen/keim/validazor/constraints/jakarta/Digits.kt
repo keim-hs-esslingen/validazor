@@ -1,6 +1,6 @@
 package de.hsesslingen.keim.validazor.constraints.jakarta
 
-import de.hsesslingen.keim.validazor.ConstraintValidazor
+import de.hsesslingen.keim.validazor.ConstraintValidator
 import de.hsesslingen.keim.validazor.NowContext
 import de.hsesslingen.keim.validazor.PropertyPath
 import de.hsesslingen.keim.validazor.ViolationCollector
@@ -9,9 +9,9 @@ import java.math.BigDecimal
 import java.math.BigInteger
 
 /**
- * A [ConstraintValidazor] for the Jakarta [Digits] constraint.
+ * A [ConstraintValidator] for the Jakarta [Digits] constraint.
  */
-class DigitsValidator : ConstraintValidazor<Digits> {
+class DigitsValidator : ConstraintValidator<Digits> {
 
     private fun BigDecimal.matchesDigitConstraints(digits: Digits): Boolean {
         return this.matchesDigitConstraints(digits.integer, digits.fraction)

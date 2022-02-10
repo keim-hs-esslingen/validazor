@@ -3,7 +3,7 @@ package de.hsesslingen.keim.validazor
 /**
  * A module that can be used to modify the behavior of [Validazor]s.
  *
- * A module can simply contain a collection of [ConstraintValidazor]s but may also
+ * A module can simply contain a collection of [ConstraintValidator]s but may also
  * alter the properties of the [Validazor.Builder] instances that are given to it,
  * resulting in different behavior of [Validazor] instances, that are built using this [Validazor.Builder].
  *

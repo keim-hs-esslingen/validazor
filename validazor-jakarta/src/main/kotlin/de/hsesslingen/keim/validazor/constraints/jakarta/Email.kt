@@ -1,15 +1,15 @@
 package de.hsesslingen.keim.validazor.constraints.jakarta
 
-import de.hsesslingen.keim.validazor.ConstraintValidazor
+import de.hsesslingen.keim.validazor.ConstraintValidator
 import de.hsesslingen.keim.validazor.NowContext
 import de.hsesslingen.keim.validazor.PropertyPath
 import de.hsesslingen.keim.validazor.ViolationCollector
 import jakarta.validation.constraints.Email
 
 /**
- * A [ConstraintValidazor] for the Jakarta [Email] constraint.
+ * A [ConstraintValidator] for the Jakarta [Email] constraint.
  */
-class EmailValidator : ConstraintValidazor<Email> {
+class EmailValidator : ConstraintValidator<Email> {
     override fun validate(
         constraint: Email,
         value: Any?,

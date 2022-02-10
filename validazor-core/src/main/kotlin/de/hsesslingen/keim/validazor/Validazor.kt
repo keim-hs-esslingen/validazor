@@ -11,8 +11,8 @@ import java.lang.reflect.Field
  * To reduce side effects and increase thread safety, this class is designed with an immutable interface.
  * Configure and create instances of this class by instantiating the nested [Builder] class.
  *
- * Thread safety cannot be guaranteed though since the [ConstraintValidazor] instances used in this class
- * can be provided by third parties and therefore are out of our control. If these [ConstraintValidazor]s are
+ * Thread safety cannot be guaranteed though since the [ConstraintValidator] instances used in this class
+ * can be provided by third parties and therefore are out of our control. If these [ConstraintValidator]s are
  * thread safe though, concurrently calling the same [Validazor] instance with multiple threads is safe.
  *
  * An instance of [Validazor] can therefore be used with any injection framework of choice.
@@ -53,18 +53,18 @@ class Validazor private constructor(
     /**
      * A [Map] of validators for validating constraints. @see [Builder.register] for more information.
      */
-    val validators: Map<Class<*>, ConstraintValidazor<*>>
+    val validators: Map<Class<*>, ConstraintValidator<*>>
 ) {
-    private fun <A : Annotation> getValidatorFor(constraint: A): ConstraintValidazor<A>? {
+    private fun <A : Annotation> getValidatorFor(constraint: A): ConstraintValidator<A>? {
         @Suppress("UNCHECKED_CAST")
         // The unchecked cast below is safe as long as the validator-class-mappings are correct.
         // Therefore, the constructor is set to private so the usage of a Builder is enforced, which
         // checks the types in its registration methods.
-        return validators[constraint.annotationClass.java] as ConstraintValidazor<A>?
+        return validators[constraint.annotationClass.java] as ConstraintValidator<A>?
     }
 
     /**
-     * Validates the given [instance] using the registered [ConstraintValidazor]s.
+     * Validates the given [instance] using the registered [ConstraintValidator]s.
      *
      * If the resulting [Set] of [Violation]s is empty, [instance] can be considered valid.
      * If the resulting [Set] of [Violation]s is *not* empty, [instance] must be considered invalid.
@@ -82,7 +82,7 @@ class Validazor private constructor(
     }
 
     /**
-     * Validates the given [instance] using the registered [ConstraintValidazor]s.
+     * Validates the given [instance] using the registered [ConstraintValidator]s.
      *
      * If [instance] is invalid, a [ViolationException] is thrown, containing all the [Violation]s found.
      *
@@ -100,7 +100,7 @@ class Validazor private constructor(
     }
 
     /**
-     * Validates the given [instance] using the registered [ConstraintValidazor]s.
+     * Validates the given [instance] using the registered [ConstraintValidator]s.
      *
      * @param instance The object that is to be validated.
      * @param nowContext See [NowContext] for more information. Uses [NowContext.fromSystemNow] as default value.
@@ -269,7 +269,7 @@ class Validazor private constructor(
          */
         var stopOnFirstViolation: Boolean = false,
     ) {
-        private val registeredValidators = HashMap<Class<*>, ConstraintValidazor<*>>()
+        private val registeredValidators = HashMap<Class<*>, ConstraintValidator<*>>()
         private val excludedClassesPrefixes = excludedPackagesPrefixes.toMutableList()
 
         /**
@@ -335,7 +335,7 @@ class Validazor private constructor(
          * @param constraintClass The class of the constraint annotation.
          * @param validator A validator instance able to validate the given constraint class.         *
          */
-        fun <A : Annotation> register(constraintClass: Class<A>, validator: ConstraintValidazor<A>): Builder {
+        fun <A : Annotation> register(constraintClass: Class<A>, validator: ConstraintValidator<A>): Builder {
             registeredValidators[constraintClass] = validator
             return this
         }
@@ -343,7 +343,7 @@ class Validazor private constructor(
         /**
          * Convenience method for Kotlin users for [Builder.register] using reified type.
          */
-        inline fun <reified A : Annotation> register(validator: ConstraintValidazor<A>): Builder {
+        inline fun <reified A : Annotation> register(validator: ConstraintValidator<A>): Builder {
             // Convenience function for kotlin users. Omits explicit declaration of class in function call.
             return register(A::class.java, validator)
         }
@@ -352,7 +352,7 @@ class Validazor private constructor(
          * Registers a [ValidazorModule] on this builder that can alter the configuration of this [Builder] and therefore
          * also the configuration of [Validazor]s built using this [Builder].
          *
-         * A module can also be used to group a set of [ConstraintValidazor]s and register them all
+         * A module can also be used to group a set of [ConstraintValidator]s and register them all
          * at this [Builder] inside the module implementation.
          */
         fun register(module: ValidazorModule): Builder {

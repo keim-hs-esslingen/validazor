@@ -1,6 +1,6 @@
 package de.hsesslingen.keim.validazor.constraints.jakarta
 
-import de.hsesslingen.keim.validazor.ConstraintValidazor
+import de.hsesslingen.keim.validazor.ConstraintValidator
 import de.hsesslingen.keim.validazor.NowContext
 import de.hsesslingen.keim.validazor.PropertyPath
 import de.hsesslingen.keim.validazor.ViolationCollector
@@ -9,9 +9,9 @@ import java.math.BigDecimal
 import java.math.BigInteger
 
 /**
- * A [ConstraintValidazor] for the Jakarta [Max] constraint.
+ * A [ConstraintValidator] for the Jakarta [Max] constraint.
  */
-class MaxValidator : ConstraintValidazor<Max> {
+class MaxValidator : ConstraintValidator<Max> {
     override fun validate(
         constraint: Max,
         value: Any?,

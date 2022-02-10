@@ -4,14 +4,14 @@ package de.hsesslingen.keim.validazor
  * This interface must be implemented by custom constraint validators.
  * They can then be registered in a [Validazor.Builder] instance.
  *
- * [ConstraintValidazor]s should be implemented with thread safety in mind, so it is good practise
+ * [ConstraintValidator]s should be implemented with thread safety in mind, so it is good practise
  * to implement them in an immutable and stateless fashion.
  *
- * If the [ConstraintValidazor] is supposed to be configurable, consider using a builder pattern to allow
- * configuration of such a [ConstraintValidazor], to be able to produce configured, immutable instances of
- * [ConstraintValidazor] from this builder.
+ * If the [ConstraintValidator] is supposed to be configurable, consider using a builder pattern to allow
+ * configuration of such a [ConstraintValidator], to be able to produce configured, immutable instances of
+ * [ConstraintValidator] from this builder.
  */
-interface ConstraintValidazor<A : Annotation> {
+interface ConstraintValidator<A : Annotation> {
     /**
      * This method is called during validation by a [Validazor] and is supposed to validate a given
      * [constraint] on the given [value].
@@ -44,7 +44,7 @@ interface ConstraintValidazor<A : Annotation> {
      * If any violations are there, the object is considered invalid.
      *
      * @param constraint The constraint annotation instance used to annotate the field whose value is being tested.
-     * @param value The value of the field that was annotated using the annotation that this [ConstraintValidazor] is for.
+     * @param value The value of the field that was annotated using the annotation that this [ConstraintValidator] is for.
      * @param path The path of the value in the hierarchy of the root object that was sent to a [Validazor] for validation.
      * @param violations An object usable for simple collection of violations.
      * @param returnOnFirstViolation Whether the method should return after finding a first violation.

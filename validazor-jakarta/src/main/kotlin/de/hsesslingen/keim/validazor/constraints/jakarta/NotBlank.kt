@@ -1,15 +1,15 @@
 package de.hsesslingen.keim.validazor.constraints.jakarta
 
-import de.hsesslingen.keim.validazor.ConstraintValidazor
+import de.hsesslingen.keim.validazor.ConstraintValidator
 import de.hsesslingen.keim.validazor.NowContext
 import de.hsesslingen.keim.validazor.PropertyPath
 import de.hsesslingen.keim.validazor.ViolationCollector
 import jakarta.validation.constraints.NotBlank
 
 /**
- * A [ConstraintValidazor] for the Jakarta [NotBlank] constraint.
+ * A [ConstraintValidator] for the Jakarta [NotBlank] constraint.
  */
-class NotBlankValidator : ConstraintValidazor<NotBlank> {
+class NotBlankValidator : ConstraintValidator<NotBlank> {
     override fun validate(
         constraint: NotBlank,
         value: Any?,

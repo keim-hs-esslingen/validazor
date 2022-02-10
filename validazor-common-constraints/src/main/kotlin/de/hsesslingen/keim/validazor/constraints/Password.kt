@@ -69,9 +69,9 @@ annotation class Password(
     }
 
     /**
-     * A [ConstraintValidazor] for the [Password] constraint annotation.
+     * A [ConstraintValidator] for the [Password] constraint annotation.
      */
-    class Validator : ConstraintValidazor<Password>, ValidazorModule {
+    class Validator : ConstraintValidator<Password>, ValidazorModule {
         override fun validate(
             constraint: Password,
             value: Any?,

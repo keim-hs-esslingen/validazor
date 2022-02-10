@@ -1,6 +1,6 @@
 package de.hsesslingen.keim.validazor.constraints.jakarta
 
-import de.hsesslingen.keim.validazor.ConstraintValidazor
+import de.hsesslingen.keim.validazor.ConstraintValidator
 import de.hsesslingen.keim.validazor.NowContext
 import de.hsesslingen.keim.validazor.PropertyPath
 import de.hsesslingen.keim.validazor.ViolationCollector
@@ -13,9 +13,9 @@ import java.time.chrono.ThaiBuddhistDate
 import java.util.*
 
 /**
- * A [ConstraintValidazor] for the Jakarta [PastOrPresent] constraint.
+ * A [ConstraintValidator] for the Jakarta [PastOrPresent] constraint.
  */
-class PastOrPresentValidator : ConstraintValidazor<PastOrPresent> {
+class PastOrPresentValidator : ConstraintValidator<PastOrPresent> {
     override fun validate(
         constraint: PastOrPresent,
         value: Any?,

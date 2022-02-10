@@ -8,7 +8,7 @@ import de.hsesslingen.keim.validazor.*
 annotation class ToStringEquals(
     val requiredValue: String
 ) {
-    class Validator : ConstraintValidazor<ToStringEquals> {
+    class Validator : ConstraintValidator<ToStringEquals> {
         override fun validate(
             constraint: ToStringEquals,
             value: Any?,

@@ -1,12 +1,12 @@
 package de.hsesslingen.keim.validazor.test
 
-import de.hsesslingen.keim.validazor.ConstraintValidazor
+import de.hsesslingen.keim.validazor.ConstraintValidator
 import de.hsesslingen.keim.validazor.NowContext
 import de.hsesslingen.keim.validazor.PropertyPath
 import de.hsesslingen.keim.validazor.ViolationCollector
 
 annotation class OlderThanFriends {
-    class Validator : ConstraintValidazor<OlderThanFriends> {
+    class Validator : ConstraintValidator<OlderThanFriends> {
         override fun validate(
             constraint: OlderThanFriends,
             value: Any?,

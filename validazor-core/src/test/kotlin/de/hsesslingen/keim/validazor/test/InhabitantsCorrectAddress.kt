@@ -1,12 +1,12 @@
 package de.hsesslingen.keim.validazor.test
 
-import de.hsesslingen.keim.validazor.ConstraintValidazor
+import de.hsesslingen.keim.validazor.ConstraintValidator
 import de.hsesslingen.keim.validazor.NowContext
 import de.hsesslingen.keim.validazor.PropertyPath
 import de.hsesslingen.keim.validazor.ViolationCollector
 
 annotation class InhabitantsCorrectAddress {
-    class Validator : ConstraintValidazor<InhabitantsCorrectAddress> {
+    class Validator : ConstraintValidator<InhabitantsCorrectAddress> {
         override fun validate(
             constraint: InhabitantsCorrectAddress,
             value: Any?,

@@ -3,7 +3,7 @@ package de.hsesslingen.keim.validazor.test
 import de.hsesslingen.keim.validazor.*
 
 annotation class NotNull {
-    class Validator : ConstraintValidazor<NotNull> {
+    class Validator : ConstraintValidator<NotNull> {
         override fun validate(
             constraint: NotNull,
             value: Any?,
