@@ -46,9 +46,9 @@ class Validazor private constructor(
     val stopOnFirstViolation: Boolean,
 
     /**
-     * @see [Builder.excludePackageByPrefix]
+     * @see [Builder.excludeClassesByPrefix]
      */
-    val excludedPackagesPrefixes: List<String>,
+    val excludedClassesPrefixes: List<String>,
 
     /**
      * A [Map] of validators for validating constraints. @see [Builder.register] for more information.
@@ -124,13 +124,13 @@ class Validazor private constructor(
         // Check whether the current object is an object from the Java stdlib or the Kotlin stdlib.
         // These objects to not contain constraint annotations and are excluded from validation checks
         // to increase performance and to avoid problems due to accessing deep hidden stuff.
-        val packageName = instance.javaClass.packageName
-        val isStdlibClass = packageName.startsWith("java.") || packageName.startsWith("kotlin.")
-        val isExcludedPackage = excludedPackagesPrefixes.any { packageName.startsWith(it) }
+        val className = instance.javaClass.name
+        val isStdlibClass = className.startsWith("java.") || className.startsWith("kotlin.")
+        val isExcludedClass = excludedClassesPrefixes.any { className.startsWith(it) }
 
         when {
             // Explicitly excluded classes or packages are checked first.
-            isExcludedPackage -> return false
+            isExcludedClass -> return false
 
             instance is Map<*, *> -> {
                 instance.keys
@@ -261,7 +261,7 @@ class Validazor private constructor(
          */
         var excludeProtectedFields: Boolean = false,
         /**
-         * @see [excludePackageByPrefix]
+         * @see [excludeClassesByPrefix]
          */
         excludedPackagesPrefixes: List<String> = listOf(),
         /**
@@ -270,7 +270,7 @@ class Validazor private constructor(
         var stopOnFirstViolation: Boolean = false,
     ) {
         private val registeredValidators = HashMap<Class<*>, ConstraintValidazor<*>>()
-        private val excludedPackagesPrefixes = excludedPackagesPrefixes.toMutableList()
+        private val excludedClassesPrefixes = excludedPackagesPrefixes.toMutableList()
 
         /**
          * Which path node separator should be used when converting the location of a property to a string path.
@@ -316,11 +316,14 @@ class Validazor private constructor(
         }
 
         /**
-         * A list of prefixes of packages excluded from validation.
-         * Objects of classes inside these packages are excluded from validation.
+         * A list of prefixes of packages or classes excluded from validation.
+         * Objects of these classes, or classes inside these packages are excluded from validation.
+         *
+         * Excluded classes are identified by checking whether their full class name starts with a registered prefix.
+         * To excluded specific classes simply exclude the full class name with package.
          */
-        fun excludePackageByPrefix(prefix: String): Builder {
-            excludedPackagesPrefixes.add(prefix)
+        fun excludeClassesByPrefix(prefix: String): Builder {
+            excludedClassesPrefixes.add(prefix)
             return this
         }
 
@@ -367,7 +370,7 @@ class Validazor private constructor(
                 excludePrivateFields = excludePrivateFields,
                 excludeProtectedFields = excludeProtectedFields,
                 stopOnFirstViolation = stopOnFirstViolation,
-                excludedPackagesPrefixes = excludedPackagesPrefixes,
+                excludedClassesPrefixes = excludedClassesPrefixes,
                 validators = registeredValidators,
             )
         }
