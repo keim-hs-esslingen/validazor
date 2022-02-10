@@ -14,7 +14,7 @@ fun Validazor.Builder.registerDefaultValidators(): Validazor.Builder {
 /**
  * Registers all the default validators, including the common constraints and the Jakarta constraints.
  */
-class DefaultValidatorsModule : ValidazorModule {
+class DefaultValidators : ValidazorModule {
     override fun configure(builder: Validazor.Builder) {
         builder.registerDefaultValidators()
     }

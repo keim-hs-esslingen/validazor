@@ -72,6 +72,7 @@ class Validazor private constructor(
      * @param instance The object that is to be validated.
      * @param nowContext See [NowContext] for more information. Uses [NowContext.fromSystemNow] as default value.
      */
+    @JvmOverloads
     fun validate(instance: Any, nowContext: NowContext = fromSystemNow()): List<Violation> {
         val rootPath = PropertyPath.createRoot(pathSeparator = pathSeparator)
         val tracker = ViolationTracker()
@@ -90,6 +91,7 @@ class Validazor private constructor(
      * @param nowContext See [NowContext] for more information. Uses [NowContext.fromSystemNow] as default value.
      * @throws ViolationException if instance is invalid.
      */
+    @JvmOverloads
     @Throws(ViolationException::class)
     fun assertValid(instance: Any, nowContext: NowContext = fromSystemNow()) {
         val violations = validate(instance, nowContext)
@@ -106,6 +108,7 @@ class Validazor private constructor(
      * @param nowContext See [NowContext] for more information. Uses [NowContext.fromSystemNow] as default value.
      * @return `true` if [instance] is valid, `false` if [instance] is invalid.
      */
+    @JvmOverloads
     fun isValid(instance: Any, nowContext: NowContext = fromSystemNow()): Boolean {
         val violations = validate(instance, nowContext)
         return violations.isEmpty()
