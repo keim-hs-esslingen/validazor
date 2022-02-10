@@ -126,13 +126,13 @@ class Validazor private constructor(
         // to increase performance and to avoid problems due to accessing deep hidden stuff.
         val packageName = instance.javaClass.packageName
         val isStdlibClass = packageName.startsWith("java.") || packageName.startsWith("kotlin.")
+        val isExcludedPackage = excludedPackagesPrefixes.any { packageName.startsWith(it) }
 
-        if (isStdlibClass || excludedPackagesPrefixes.any { packageName.startsWith(it) }) {
-            return false
-        }
+        when {
+            // Explicitly excluded classes or packages are checked first.
+            isExcludedPackage -> return false
 
-        when (instance) {
-            is Map<*, *> -> {
+            instance is Map<*, *> -> {
                 instance.keys
                     .map { key -> validate(key, instancePath.child("keys").key(key), tracker, nowContext) }
                     .none { hasViolations -> hasViolations && stopOnFirstViolation }
@@ -143,9 +143,13 @@ class Validazor private constructor(
                         .none { hasViolations -> hasViolations && stopOnFirstViolation }
                 }
             }
-            is Iterable<*> -> instance.asSequence()
+
+            instance is Iterable<*> -> instance.asSequence()
                 .mapIndexed { index, el -> validate(el, instancePath.index(index), tracker, nowContext) }
                 .none { hasViolations -> hasViolations && stopOnFirstViolation }
+
+            // Stdlib classes are checked after checking for collections to avoid excluding collections.
+            isStdlibClass -> return false
 
             else -> validateObject(instance, instancePath, tracker, nowContext)
         }
@@ -186,32 +190,32 @@ class Validazor private constructor(
 
     private fun <T : Any> validateField(
         instance: T,
-        property: Field,
+        field: Field,
         instancePath: PropertyPath,
         tracker: ViolationTracker,
         nowContext: NowContext
     ): Boolean {
-        if (excludeStaticFields && property.isStatic()) {
+        if (excludeStaticFields && field.isStatic()) {
             return false
         }
-        if (excludePrivateFields && property.isPrivate()) {
+        if (excludePrivateFields && field.isPrivate()) {
             return false
         }
-        if (excludeProtectedFields && property.isProtected()) {
+        if (excludeProtectedFields && field.isProtected()) {
             return false
         }
 
-        if (property.isPrivate() || property.isProtected()) {
-            if (!property.checkAndTrySetAccessible(instance)) {
+        if (field.isPrivate() || field.isProtected()) {
+            if (!field.checkAndTrySetAccessible(instance)) {
                 return false
             }
         }
 
-        val fieldValue: Any? = property.get(instance)
-        val fieldPath = instancePath.child(property.name)
+        val fieldValue: Any? = field.get(instance)
+        val fieldPath = instancePath.child(field.name)
 
         // Validate each annotation on the field.
-        property.declaredAnnotations.none {
+        field.declaredAnnotations.none {
             // Using `none` together with || !stopOnFirstViolation allows an early exit if stopping is configured
             // and a continuation if stopping is not configured.
             validateValue(fieldValue, fieldPath, tracker, it, nowContext) && stopOnFirstViolation
