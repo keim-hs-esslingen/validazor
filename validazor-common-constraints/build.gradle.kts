@@ -29,7 +29,7 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation(project(":validazor-core"))
 
-    testImplementation(project(":test-utils"))
+    testImplementation(project(":validazor-test-utils"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jupiterApiVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }

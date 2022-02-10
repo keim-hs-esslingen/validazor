@@ -30,7 +30,7 @@ dependencies {
     implementation(project(":validazor-core"))
     implementation("jakarta.validation:jakarta.validation-api:3.0.0")
 
-    testImplementation(project(":test-utils"))
+    testImplementation(project(":validazor-test-utils"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jupiterApiVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }

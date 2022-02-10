@@ -30,7 +30,7 @@ dependencies {
     implementation(project(":validazor-common-constraints"))
     implementation(project(":validazor-jakarta"))
 
-    testImplementation(project(":test-utils"))
+    testImplementation(project(":validazor-test-utils"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jupiterApiVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
