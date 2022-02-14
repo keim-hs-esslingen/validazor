@@ -28,9 +28,8 @@ GitHub. Feel free to open an issue there.
     1. [Implement Constraint](#implement-constraint)
     2. [Register ConstraintValidator](#register-constraintvalidator)
 4. [Jakarta-Constraint-Support](#jakarta-constraint-support)
-    1. [Dependencies](#jakarta-dependencies)
-    2. [Registration of Module](#registration-of-jakartamodule)
-    3. [Important for Kotlin users](#important-for-kotlin-users-of-jakarta-constraints-with-validazor)
+    1. [Registration of Module](#registration-of-jakartamodule)
+    2. [Important for Kotlin users](#important-for-kotlin-users-of-jakarta-constraints-with-validazor)
 5. [General Drawbacks](#general-drawbacks)
 
 ---
@@ -404,15 +403,16 @@ configuration:
 **Maven:**
 
 ```xml
+
 <dependency>
     <groupId>com.github.keim-hs-esslingen</groupId>
     <artifactId>validazor-jakarta</artifactId>
     <version>@{validazorVersion}</version>
 </dependency>
 <dependency>
-    <groupId>jakarta.validation</groupId>
-    <artifactId>jakarta.validation-api</artifactId>
-    <version>3.0.1</version>
+   <groupId>jakarta.validation</groupId>
+   <artifactId>jakarta.validation-api</artifactId>
+   <version>3.0.1</version>
 </dependency>
 ```
 
