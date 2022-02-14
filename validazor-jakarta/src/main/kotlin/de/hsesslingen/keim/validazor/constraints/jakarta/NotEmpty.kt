@@ -20,7 +20,7 @@ class NotEmptyValidator : ConstraintValidator<NotEmpty> {
     ) {
         checkConstraint("must not be empty", path, constraint, violations) {
             when (value) {
-                is String -> value.isNotEmpty()
+                is CharSequence -> value.isNotEmpty()
                 is Collection<*> -> value.isNotEmpty()
                 is Map<*, *> -> value.isNotEmpty()
                 is Array<*> -> value.isNotEmpty()

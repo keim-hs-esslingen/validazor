@@ -19,7 +19,7 @@ class NotBlankValidator : ConstraintValidator<NotBlank> {
         now: NowContext
     ) {
         checkConstraint("must not be blank", path, constraint, violations) {
-            value !is String || value.isNotBlank()
+            value !is CharSequence || value.isNotBlank()
         }
     }
 }

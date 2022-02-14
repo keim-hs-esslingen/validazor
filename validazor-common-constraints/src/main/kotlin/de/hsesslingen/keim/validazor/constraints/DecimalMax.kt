@@ -19,6 +19,7 @@ import java.math.BigInteger
  * - [Float]
  * - [BigInteger]
  * - [BigDecimal]
+ * - [CharSequence] (includes [String])
  *
  * `null` is considered valid.
  */
@@ -62,6 +63,8 @@ annotation class DecimalMax(
                         is Float -> value <= constraint.value.toFloat()
                         is BigDecimal -> value <= constraint.value.toBigDecimal()
                         is BigInteger -> value <= constraint.value.toBigInteger()
+                        is String -> BigDecimal(value) <= constraint.value.toBigDecimal()
+                        is CharSequence -> BigDecimal(value.toString()) <= constraint.value.toBigDecimal()
                         else -> true
                     }
                 }
@@ -81,6 +84,8 @@ annotation class DecimalMax(
                         is Float -> value < constraint.value.toFloat()
                         is BigDecimal -> value < constraint.value.toBigDecimal()
                         is BigInteger -> value < constraint.value.toBigInteger()
+                        is String -> BigDecimal(value) < constraint.value.toBigDecimal()
+                        is CharSequence -> BigDecimal(value.toString()) < constraint.value.toBigDecimal()
                         else -> true
                     }
                 }

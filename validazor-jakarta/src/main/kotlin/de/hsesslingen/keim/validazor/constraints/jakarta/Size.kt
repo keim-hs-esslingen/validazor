@@ -28,7 +28,7 @@ class SizeValidator : ConstraintValidator<Size> {
             violations
         ) {
             when (value) {
-                is String -> value.length in min..max
+                is CharSequence -> value.length in min..max
                 is Collection<*> -> value.size in min..max
                 is Map<*, *> -> value.size in min..max
                 is Array<*> -> value.size in min..max

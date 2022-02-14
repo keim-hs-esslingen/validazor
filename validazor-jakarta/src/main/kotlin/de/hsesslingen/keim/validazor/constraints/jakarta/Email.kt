@@ -24,11 +24,11 @@ class EmailValidator : ConstraintValidator<Email> {
             val violationMessage = "must be a valid email address and additionally match pattern \"${constraint.regexp}\""
 
             checkConstraint(violationMessage, path, constraint, violations) {
-                value !is String || (VALID_EMAIL_PATTERN.matches(value) && extraPattern.matcher(value).matches())
+                value !is CharSequence || (VALID_EMAIL_PATTERN.matches(value) && extraPattern.matcher(value).matches())
             }
         } else {
             checkConstraint("must be a valid email address", path, constraint, violations) {
-                value !is String || VALID_EMAIL_PATTERN.matches(value)
+                value !is CharSequence || VALID_EMAIL_PATTERN.matches(value)
             }
         }
     }

@@ -36,6 +36,8 @@ class DecimalMinValidator : ConstraintValidator<DecimalMin> {
                     is Float -> value >= constraint.value.toFloat()
                     is BigDecimal -> value >= constraint.value.toBigDecimal()
                     is BigInteger -> value >= constraint.value.toBigInteger()
+                    is String -> BigDecimal(value) >= constraint.value.toBigDecimal()
+                    is CharSequence -> BigDecimal(value.toString()) >= constraint.value.toBigDecimal()
                     else -> true
                 }
             }
@@ -55,6 +57,8 @@ class DecimalMinValidator : ConstraintValidator<DecimalMin> {
                     is Float -> value > constraint.value.toFloat()
                     is BigDecimal -> value > constraint.value.toBigDecimal()
                     is BigInteger -> value > constraint.value.toBigInteger()
+                    is String -> BigDecimal(value) > constraint.value.toBigDecimal()
+                    is CharSequence -> BigDecimal(value.toString()) > constraint.value.toBigDecimal()
                     else -> true
                 }
             }
