@@ -5,7 +5,7 @@ validation API but is still different. Some aspects of Validazor that should be 
 
 - **Very simple to use!**
 - **Very simple to integrate!**
-- **Works with your injection framework of choice!**
+- **Works with your injection framework of choice!** (probably)
 - **Thread safe usage!**
 - **Easy to extend!**
 - **Easy to configure!**
