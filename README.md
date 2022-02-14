@@ -7,9 +7,9 @@ validation API but is still different. Some aspects of Validazor that should be 
 - **Very simple to integrate!**
 - **Works with your injection framework of choice!**
 - **Thread safe usage!**
-- **Easily extensible!**
+- **Easy to extend!**
 - **Easy to configure!**
-- **Validates Jakarta-Validation-Constraints out of the box!**
+- **Support for Jakarta-Validation-Constraints!**
 
 Validazor is still very young and evolving. We appreciate your feedback and feature requests on the issues-page here on
 GitHub. Feel free to open an issue there.
@@ -27,6 +27,11 @@ GitHub. Feel free to open an issue there.
 3. [Custom constraints](#custom-constraints)
     1. [Implement Constraint](#implement-constraint)
     2. [Register ConstraintValidator](#register-constraintvalidator)
+4. [Jakarta-Constraint-Support](#jakarta-constraint-support)
+    1. [Dependencies](#jakarta-dependencies)
+    2. [Registration of Module](#registration-of-jakartamodule)
+    3. [Important for Kotlin users](#important-for-kotlin-users-of-jakarta-constraints-with-validazor)
+5. [General Drawbacks](#general-drawbacks)
 
 ---
 
@@ -59,8 +64,37 @@ You can find the latest version on the release page.
 
 ## Usage:
 
-Annotate classes that should be validated with any of the Jakarta validation API constraint annotations or any of the
-common constraints provided by Validazor.
+Annotate classes that should be validated with any of the existing common constraints available by default. These are:
+
+- `AssertTrue`: Validates that a value is `true`.
+- `AssertFalse`: Validates that a value is `false`.
+- `Null`: Validates that a value is `null`.
+- `NotNull`: Validates that a value is *not* `null`.
+- `NotEmpty`: Validates that a value is *not* empty.
+- `NotBlank`: Validates that a value is *not* blank.
+- `Min`: Validates that a number does not undermatch a minimum.
+- `Max`: Validates that a number does not exceed a maximum.
+- `DecimalMin`: Validates that a numerical value does not undermatch a minimum. Supports `String`.
+- `DecimalMax`: Validates that a numerical values does not exceed a maximum. Supports `String`.
+- `Digits`: Validates that the number of integer and fractional digits of a numerical value does not exceed a maximum.
+- `Positive`: Validates that a number is greater than zero.
+- `PositiveOrZero`: Validates that a number is greater than or equal to zero.
+- `Negative`: Validates that a number is less than zero.
+- `NegativeOrZero`: Validates that a number is less than or equal to zero.
+- `Future`: Validates that a temporal value is in the future.
+- `FutureOrPresent`: Validates that a temporal value in the future or present.
+- `Past`: Validates that a temporal value is in the past.
+- `PastOrPresent`: Validates that a temporal value in the past or present.
+- `Pattern`: Validates that a `CharSequence` matches a given pattern.
+- `Email`: Validates that a `CharSequence` represent a valid email address.
+- `Password`: Validates that a password `CharSequence` matches various constraints like length, required or forbidden
+  characters or minimum entropy.
+
+Most of these common constraints are named and programmed to work like their siblings from tha Jakarta-Validation-API.
+This is done on purpose to simplify migration between these two. The annotations are not pulled in from the
+Jakarta-Validation-API, but instead have their own classes inside the Validazor package. Validazor and these
+Jakarta-similar constraints can be used entirely without the Jakarta-Validation-API. To support the constraints from
+Jakarta, please see the corresponding [chapter](#jakarta-constraint-support).
 
 ### Annotate classes:
 
@@ -68,21 +102,18 @@ common constraints provided by Validazor.
 
 ```Kotlin
 data class Person(
-    @field:NotBlank
-    @field:NotNull
+    @NotBlank
+    @NotNull
     val name: String,
 
-    @field:PositiveOrZero
+    @PositiveOrZero
     val age: Int,
 
-    @field:NotBlank
-    @field:Email
+    @NotBlank
+    @Email
     val email: String,
 )
 ```
-
-**Note:** If using Kotlin, the annotations must be specialized to be put on the fields explicitly. We are aiming to
-remove this restriction in the future.
 
 **Java:**
 
@@ -101,8 +132,8 @@ class Person {
 }
 ```
 
-If using Java, annotations on getters and setters are not yet supported. We are aiming to remove this restriction in the
-future.
+**Note:** Currently, only annotations on classes and fields are support. Getters, setters and methods will not work.
+This applies for both, Kotlin and Java.
 
 ### Obtain `Validazor` instance
 
@@ -115,7 +146,7 @@ import de.hsesslingen.keim.validazor.DefaultValidators.*
 
 fun test() {
     val person = Person("Ben", 29, "anonymous@hs-esslingen.de")
-    
+
     val validator = getDefaultValidator()
 
     val violations: List<Violation> = validator.validate(person)
@@ -182,6 +213,7 @@ Let's implement a constraint that checks if an integer or long is dividable by a
 **Kotlin:**
 
 ```kotlin
+@Target(AnnotationTarget.FIELD)
 annotation class DividableBy(
     val value: Long = 1
 ) {
@@ -289,6 +321,32 @@ public @interface DividableBy {
 }
 ```
 
+When defining a custom constraint annotation, make sure to restrict them to fields and/or classes (but also only if you
+are fine with doing this). This is done through setting the `@Target(AnnotationTarget.FIELD, AnnotationTarget.CLASS)`
+annotation in Kotlin and the `@Target(ElementType.FIELD)` annotation in Java.
+
+The reason for this is the usage of them in Kotlin. If the annotations are allowed anywhere, using them on fields
+without explicitly setting the target to "field", will in many cases result in them being placed somewhere else *but not
+on the field*. Read the Kotlin docs about annotation targets for more information.
+
+Either allow them on any field, but then use them as follows on usage sites:
+
+```Kotlin
+class Person(
+    @field:DividableBy(2) // field: prefix required.
+    val age: String
+)
+```
+
+Or restrict them to only fields and classes and use them freely as follows:
+
+```Kotlin
+class Person(
+    @DividableBy(2) // No field: prefix needed.
+    val age: String
+)
+```
+
 ### Register `ConstraintValidator`
 
 Register your custom constraint together with it's validator as follows:
@@ -302,9 +360,9 @@ fun register() {
     val validazor = Validazor.Builder()
         // Here we register our custom constraint:
         .register(DividableBy.Validator())
-        // If we also want the Jakarta constraints and the common ones from Validazor as well,
-        // register the `DefaultValidators` using this extension function.
-        // This is not required for custom constraints to work.
+        // If we also want the common constraints from Validazor as well,
+        // register the default validators using this extension function.
+        // However, this is not required for custom constraints to work.
         .registerDefaultValidators()
         .build()
 
@@ -323,7 +381,7 @@ class Whatever {
                 // Here we register our custom constraint:
                 .register(DividableBy.class, new DividableBy.Validator())
                 // If we also want the Jakarta constraints and the common ones from Validazor as well,
-                // register the `DefaultValidators` as module. This is not required for custom
+                // register the `DefaultValidators` as module. However, this is not required for custom
                 // constraints to work.
                 .register(DefaultValidators::asModule)
                 .build();
@@ -336,3 +394,129 @@ class Whatever {
 This step is supposed to be done on startup of the application, because the retrieved Validazor is stateless and can be
 reused. Provide it to your injection framework of choice.
 
+---
+
+## Jakarta-Constraint-Support:
+
+To support the constraints from the Jakarta-Validation-API, please add the following dependencies to your build
+configuration:
+
+**Maven:**
+
+```xml
+<dependency>
+    <groupId>com.github.keim-hs-esslingen</groupId>
+    <artifactId>validazor-jakarta</artifactId>
+    <version>@{validazorVersion}</version>
+</dependency>
+<dependency>
+    <groupId>jakarta.validation</groupId>
+    <artifactId>jakarta.validation-api</artifactId>
+    <version>3.0.1</version>
+</dependency>
+```
+
+**Gradle:**
+
+```kotlin
+implementation("com.github.keim-hs-esslingen.validazor:validazor-jakarta:$validazorVersion")
+implementation("jakarta.validation:jakarta.validation-api:3.0.1")
+```
+
+### Registration of `JakartaModule`:
+
+To enable the validation of Jakarta constraints, register the Jakarta validators on a validazor builder.
+
+**Kotlin:**
+
+```kotlin
+fun createValidazor(): Validazor {
+    return Validazor.Builder()
+        .registerJakartaConstraints() // Extension function.
+        .registerCommonConstraints() // If you want to use these as well.
+        .build()
+}
+```
+
+**Java:**
+
+```java
+public class Registration {
+    void register() {
+        var validazor = new Validazor.Builder()
+                .register(JakartaConstraints::asModule)
+                .register(CommonConstraints::asModule) // If you want to use these as well.
+                .build();
+    }
+}
+```
+
+You can now use the Jakarta constraint annotations for validation. If you registered the common constraints as well,
+make sure you import the right annotations at the call sites. If you only need the Jakarta constraints and not the
+common ones from Validazor, change your build configuration to the following, to avoid pulling in the common constraints
+from the `validazor-common-constraints` artifact. They will no longer be on your class path afterwards:
+
+**Maven:**
+
+```xml
+
+<dependencies>
+    <dependency>
+        <groupId>com.github.keim-hs-esslingen</groupId>
+        <artifactId>validazor-core</artifactId>
+        <version>@{validazorVersion}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.github.keim-hs-esslingen</groupId>
+        <artifactId>validazor-jakarta</artifactId>
+        <version>@{validazorVersion}</version>
+    </dependency>
+    <dependency>
+        <groupId>jakarta.validation</groupId>
+        <artifactId>jakarta.validation-api</artifactId>
+        <version>3.0.1</version>
+    </dependency>
+</dependencies>
+```
+
+**Gradle:**
+
+```kotlin
+implementation("com.github.keim-hs-esslingen.validazor:validazor-core:$validazorVersion")
+implementation("com.github.keim-hs-esslingen.validazor:validazor-jakarta:$validazorVersion")
+implementation("jakarta.validation:jakarta.validation-api:3.0.1")
+```
+
+### Important for Kotlin users of Jakarta constraints with Validazor:
+
+**Important:** If you use the Jakarta constraints annotations on Kotlin code, there is a drawback that you must accept
+for this to work. You must explicitly set the annotation target of annotated fields to "field" by defining the
+annotation constraints as follows:
+
+```kotlin
+class Person(
+    @field:NotBlank // use field: prefix on annotations from the Jakarta module.
+    val name: String
+)
+```
+
+This is required because the Jakarta constraints are implemented to work at any place. This makes Kotlin use a default
+order of placement sites when compiling to byte code in which the fields are not the first priority. Resulting byte code
+classes do not contain the annotations on the fields and the validation constraints will be ignored. For more
+information read the Kotlin docs on the topic of annotation targets.
+
+Using the common constraints provided by default from the Validazor package do *not* have this restriction, as they are
+allowed only on fields and classes.
+
+
+
+---
+
+## General Drawbacks:
+
+Validazor has some general drawbacks compared to the Jakarta-Validation-API.
+
+These are:
+
+- No support for validation groups.
+- Kotlin-Stdlib is required as transitive dependency for Java users (might change in future)

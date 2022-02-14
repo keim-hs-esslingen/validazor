@@ -31,7 +31,7 @@ fun Validazor.Builder.registerJakartaConstraints(): Validazor.Builder {
     return this
 }
 
-class JakartaValidationModule : ValidazorModule {
+class JakartaConstraints : ValidazorModule {
     override fun configure(builder: Validazor.Builder) {
         builder.registerJakartaConstraints()
     }

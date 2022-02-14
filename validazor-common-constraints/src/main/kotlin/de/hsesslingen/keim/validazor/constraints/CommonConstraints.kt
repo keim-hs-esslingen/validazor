@@ -33,7 +33,7 @@ fun Validazor.Builder.registerCommonConstraints(): Validazor.Builder {
     return this
 }
 
-class CommonConstraintsModule : ValidazorModule {
+class CommonConstraints : ValidazorModule {
     override fun configure(builder: Validazor.Builder) {
         builder.registerCommonConstraints()
     }

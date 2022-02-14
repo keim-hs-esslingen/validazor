@@ -4,13 +4,13 @@ import de.hsesslingen.keim.validazor.NowContext
 import de.hsesslingen.keim.validazor.NowContext.Companion.fromSystemNow
 import de.hsesslingen.keim.validazor.Validazor
 import de.hsesslingen.keim.validazor.Violation
-import de.hsesslingen.keim.validazor.constraints.jakarta.JakartaValidationModule
+import de.hsesslingen.keim.validazor.constraints.jakarta.registerJakartaConstraints
 import de.hsesslingen.keim.validazor.testutils.assertAny
 import de.hsesslingen.keim.validazor.testutils.assertNone
 
 fun validazor(): Validazor {
     return Validazor.Builder()
-        .register(JakartaValidationModule())
+        .registerJakartaConstraints()
         .build()
 }
 
