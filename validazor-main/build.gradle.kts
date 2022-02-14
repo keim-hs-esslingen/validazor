@@ -29,8 +29,6 @@ repositories {
 dependencies {
     implementation(project(":validazor-core"))
     implementation(project(":validazor-common-constraints"))
-    implementation(project(":validazor-jakarta"))
-    implementation("jakarta.validation:jakarta.validation-api:$jakartaApiVersion")
 
     testImplementation(project(":validazor-test-utils"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jupiterApiVersion")
