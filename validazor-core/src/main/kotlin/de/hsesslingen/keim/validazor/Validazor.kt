@@ -1,7 +1,6 @@
 package de.hsesslingen.keim.validazor
 
 import de.hsesslingen.keim.validazor.NowContext.Companion.fromSystemNow
-import de.hsesslingen.keim.validazor.Validazor.Builder
 import java.lang.reflect.Field
 
 /**
@@ -51,16 +50,21 @@ class Validazor private constructor(
     val excludedClassesPrefixes: List<String>,
 
     /**
-     * A [Map] of validators for validating constraints. @see [Builder.register] for more information.
+     * A [Map] of validators for validating constraints.
+     *
+     * The type of the class must math the type of it's mapped [ConstraintValidator]s.
+     * A mapping that does not fulfill this requirement can cause exceptions during validation.
+     *
+     * @see [Builder.register] for more information.
      */
-    val validators: Map<Class<*>, ConstraintValidator<*>>
+    val validators: Map<Class<*>, List<ConstraintValidator<*>>>
 ) {
-    private fun <A : Annotation> getValidatorFor(constraint: A): ConstraintValidator<A>? {
+    private fun <A : Annotation> getValidatorsFor(constraint: A): List<ConstraintValidator<A>>? {
         @Suppress("UNCHECKED_CAST")
         // The unchecked cast below is safe as long as the validator-class-mappings are correct.
         // Therefore, the constructor is set to private so the usage of a Builder is enforced, which
         // checks the types in its registration methods.
-        return validators[constraint.annotationClass.java] as ConstraintValidator<A>?
+        return validators[constraint.annotationClass.java] as List<ConstraintValidator<A>>?
     }
 
     /**
@@ -239,7 +243,11 @@ class Validazor private constructor(
         constraint: Annotation,
         nowContext: NowContext
     ): Boolean {
-        getValidatorFor(constraint)?.validate(constraint, value, valuePath, tracker, stopOnFirstViolation, nowContext)
+        getValidatorsFor(constraint)?.none {
+            it.validate(constraint, value, valuePath, tracker, stopOnFirstViolation, nowContext)
+            tracker.hasViolations && stopOnFirstViolation
+        }
+
         return tracker.hasViolations
     }
 
@@ -272,7 +280,7 @@ class Validazor private constructor(
          */
         var stopOnFirstViolation: Boolean = false,
     ) {
-        private val registeredValidators = HashMap<Class<*>, ConstraintValidator<*>>()
+        private val registeredValidators = HashMap<Class<*>, MutableList<ConstraintValidator<*>>>()
         private val excludedClassesPrefixes = excludedPackagesPrefixes.toMutableList()
 
         /**
@@ -333,13 +341,14 @@ class Validazor private constructor(
         /**
          * Registers a new constraint annotation together with a validator on this [Builder].
          *
-         * This enables [Validazor]s built using this [Builder] to validate such constraints.
+         * This enables [Validazor]s, which are built using this [Builder], to validate such constraints.
          *
          * @param constraintClass The class of the constraint annotation.
          * @param validator A validator instance able to validate the given constraint class.         *
          */
         fun <A : Annotation> register(constraintClass: Class<A>, validator: ConstraintValidator<A>): Builder {
-            registeredValidators[constraintClass] = validator
+            val list = registeredValidators.getOrPut(constraintClass) { ArrayList() }
+            list.add(validator)
             return this
         }
 
