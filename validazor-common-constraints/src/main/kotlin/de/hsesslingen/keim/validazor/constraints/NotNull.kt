@@ -4,12 +4,15 @@ import de.hsesslingen.keim.validazor.ConstraintValidator
 import de.hsesslingen.keim.validazor.NowContext
 import de.hsesslingen.keim.validazor.PropertyPath
 import de.hsesslingen.keim.validazor.ViolationCollector
+import kotlin.annotation.AnnotationTarget.CLASS
+import kotlin.annotation.AnnotationTarget.FIELD
 
 /**
  * Validates whether the annotated field value is not `null`.
  *
  * Supported types: any
  */
+@Target(FIELD, CLASS)
 annotation class NotNull {
 
     /**

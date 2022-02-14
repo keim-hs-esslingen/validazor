@@ -6,6 +6,8 @@ import de.hsesslingen.keim.validazor.PropertyPath
 import de.hsesslingen.keim.validazor.ViolationCollector
 import java.math.BigDecimal
 import java.math.BigInteger
+import kotlin.annotation.AnnotationTarget.CLASS
+import kotlin.annotation.AnnotationTarget.FIELD
 
 /**
  * Validates that a number is less than or equal to [value].
@@ -22,6 +24,7 @@ import java.math.BigInteger
  *
  * `null` is considered valid.
  */
+@Target(FIELD, CLASS)
 annotation class Max(
     /**
      * The maximum value that the annotated field value may not exceed.

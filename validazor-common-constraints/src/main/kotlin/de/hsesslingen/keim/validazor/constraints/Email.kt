@@ -5,6 +5,8 @@ import de.hsesslingen.keim.validazor.NowContext
 import de.hsesslingen.keim.validazor.PropertyPath
 import de.hsesslingen.keim.validazor.ViolationCollector
 import java.util.regex.Pattern
+import kotlin.annotation.AnnotationTarget.CLASS
+import kotlin.annotation.AnnotationTarget.FIELD
 
 /**
  * Validates whether the annotated field value represents a valid email address and
@@ -15,6 +17,7 @@ import java.util.regex.Pattern
  *
  * `null` values are considered valid.
  */
+@Target(FIELD, CLASS)
 annotation class Email(
     /**
      * An optional, additional regular expression that the annotated field value must match.

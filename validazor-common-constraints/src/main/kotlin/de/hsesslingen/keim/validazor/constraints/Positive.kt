@@ -6,6 +6,8 @@ import de.hsesslingen.keim.validazor.PropertyPath
 import de.hsesslingen.keim.validazor.ViolationCollector
 import java.math.BigDecimal
 import java.math.BigInteger
+import kotlin.annotation.AnnotationTarget.CLASS
+import kotlin.annotation.AnnotationTarget.FIELD
 
 /**
  * Validates whether the annotated field value is positive.
@@ -22,7 +24,9 @@ import java.math.BigInteger
  *
  * `null` is considered value.
  */
+@Target(FIELD, CLASS)
 annotation class Positive {
+
     /**
      * [ConstraintValidator] for the [Positive] constraint.
      */

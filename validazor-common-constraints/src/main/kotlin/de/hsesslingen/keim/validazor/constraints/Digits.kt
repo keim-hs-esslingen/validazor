@@ -6,6 +6,8 @@ import de.hsesslingen.keim.validazor.PropertyPath
 import de.hsesslingen.keim.validazor.ViolationCollector
 import java.math.BigDecimal
 import java.math.BigInteger
+import kotlin.annotation.AnnotationTarget.CLASS
+import kotlin.annotation.AnnotationTarget.FIELD
 
 /**
  * The annotated field value must have less than or equally many integer and fractional digits.
@@ -23,6 +25,7 @@ import java.math.BigInteger
  *
  * `null` values are considered valid.
  */
+@Target(FIELD, CLASS)
 annotation class Digits(
     /**
      * The maximum number of integer digits the annotated field value may have.

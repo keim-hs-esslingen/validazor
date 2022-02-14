@@ -2,6 +2,8 @@ package de.hsesslingen.keim.validazor.constraints
 
 import de.hsesslingen.keim.validazor.*
 import de.hsesslingen.keim.validazor.constraints.Password.CharacterKind
+import kotlin.annotation.AnnotationTarget.CLASS
+import kotlin.annotation.AnnotationTarget.FIELD
 import kotlin.math.log
 import kotlin.math.pow
 import kotlin.math.round
@@ -11,6 +13,7 @@ import kotlin.math.round
  *
  * This is e.g. useful for an API that is used for (re-)setting passwords.
  */
+@Target(FIELD, CLASS)
 annotation class Password(
     /**
      * The minimum length required for the password. Default is `0`.
@@ -119,12 +122,20 @@ annotation class Password(
             returnOnFirstViolation: Boolean,
         ) {
             if (password.size < constraint.minLength) {
-                violations.add("must be at least ${constraint.minLength} characters long", path, constraint.toConstraintInfo())
+                violations.add(
+                    "must be at least ${constraint.minLength} characters long",
+                    path,
+                    constraint.toConstraintInfo()
+                )
                 if (returnOnFirstViolation) return
             }
 
             if (password.size > constraint.maxLength) {
-                violations.add("must not be longer than ${constraint.maxLength} characters", path, constraint.toConstraintInfo())
+                violations.add(
+                    "must not be longer than ${constraint.maxLength} characters",
+                    path,
+                    constraint.toConstraintInfo()
+                )
                 if (returnOnFirstViolation) return
             }
 

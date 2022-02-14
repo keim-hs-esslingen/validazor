@@ -7,6 +7,8 @@ import java.time.chrono.JapaneseDate
 import java.time.chrono.MinguoDate
 import java.time.chrono.ThaiBuddhistDate
 import java.util.*
+import kotlin.annotation.AnnotationTarget.CLASS
+import kotlin.annotation.AnnotationTarget.FIELD
 
 /**
  * Validates whether the annotated field value is in the past or present.
@@ -36,7 +38,9 @@ import java.util.*
  *
  * `null` is considered valid.
  */
+@Target(FIELD, CLASS)
 annotation class PastOrPresent {
+
     /**
      * [ConstraintValidator] for the [PastOrPresent] constraint.
      */

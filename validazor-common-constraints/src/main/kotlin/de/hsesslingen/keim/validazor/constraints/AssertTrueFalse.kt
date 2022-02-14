@@ -4,6 +4,8 @@ import de.hsesslingen.keim.validazor.ConstraintValidator
 import de.hsesslingen.keim.validazor.NowContext
 import de.hsesslingen.keim.validazor.PropertyPath
 import de.hsesslingen.keim.validazor.ViolationCollector
+import kotlin.annotation.AnnotationTarget.CLASS
+import kotlin.annotation.AnnotationTarget.FIELD
 
 sealed class BooleanValidator<A : Annotation>(
     private val requiredValue: Boolean
@@ -33,6 +35,7 @@ sealed class BooleanValidator<A : Annotation>(
  *
  * `null` is considered valid.
  */
+@Target(FIELD, CLASS)
 annotation class AssertTrue {
     /**
      * [ConstraintValidator] for the [AssertTrue] constraint.
@@ -48,6 +51,7 @@ annotation class AssertTrue {
  *
  * `null` is considered valid.
  */
+@Target(FIELD, CLASS)
 annotation class AssertFalse {
     /**
      * [ConstraintValidator] for the [AssertFalse] constraint.

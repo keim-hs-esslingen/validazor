@@ -4,6 +4,8 @@ import de.hsesslingen.keim.validazor.ConstraintValidator
 import de.hsesslingen.keim.validazor.NowContext
 import de.hsesslingen.keim.validazor.PropertyPath
 import de.hsesslingen.keim.validazor.ViolationCollector
+import kotlin.annotation.AnnotationTarget.CLASS
+import kotlin.annotation.AnnotationTarget.FIELD
 
 /**
  * Validates whether the size of the annotated field value does not exceed [max] and undermatch [min].
@@ -16,6 +18,7 @@ import de.hsesslingen.keim.validazor.ViolationCollector
  *
  * `null` is considered valid.
  */
+@Target(FIELD, CLASS)
 annotation class Size(
     /**
      * The minimum size that the annotated field value must have.
@@ -26,6 +29,7 @@ annotation class Size(
      */
     val max: Int = Integer.MAX_VALUE,
 ) {
+
     /**
      * [ConstraintValidator] for the [Size] constraint.
      */
