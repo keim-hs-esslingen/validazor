@@ -10,6 +10,7 @@ validation API but is still different. Some aspects of Validazor that should be 
 - **Easy to extend!**
 - **Easy to configure!**
 - **Support for Jakarta-Validation-Constraints!**
+- **Validates items and keys of collections and maps by default!**
 
 Validazor is still very young and evolving. We appreciate your feedback and feature requests on the issues-page here on
 GitHub. Feel free to open an issue there.
