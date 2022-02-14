@@ -1,13 +1,12 @@
 package de.hsesslingen.keim.validazor
 
-import de.hsesslingen.keim.validazor.constraints.jakarta.JakartaValidationModule
+import de.hsesslingen.keim.validazor.constraints.registerCommonConstraints
 
 /**
- * Registers all the default validators, including the common constraints and the Jakarta constraints.
+ * Registers the default constraints on this [Validazor.Builder], which currently includes all the common constraints.
  */
 fun Validazor.Builder.registerDefaultValidators(): Validazor.Builder {
-    this.register(de.hsesslingen.keim.validazor.constraints.Password.Validator())
-    this.register(JakartaValidationModule())
+    this.registerCommonConstraints()
     return this
 }
 

@@ -1,31 +1,48 @@
 package de.hsesslingen.keim.validazor.constraints.jakarta
 
+import de.hsesslingen.keim.validazor.ConstraintValidator
 import de.hsesslingen.keim.validazor.ValidazorModule
 import de.hsesslingen.keim.validazor.Validazor
 
+fun Validazor.Builder.registerJakartaConstraints(): Validazor.Builder {
+    this.register(AssertFalseValidator())
+        .register(AssertTrueValidator())
+        .register(DecimalMaxValidator())
+        .register(DecimalMinValidator())
+        .register(DigitsValidator())
+        .register(EmailValidator())
+        .register(FutureValidator())
+        .register(FutureOrPresentValidator())
+        .register(MaxValidator())
+        .register(MinValidator())
+        .register(NegativeValidator())
+        .register(NegativeOrZeroValidator())
+        .register(NotBlankValidator())
+        .register(NotEmptyValidator())
+        .register(NotNullValidator())
+        .register(NullValidator())
+        .register(PastValidator())
+        .register(PastOrPresentValidator())
+        .register(PatternValidator())
+        .register(PositiveValidator())
+        .register(PositiveOrZeroValidator())
+        .register(SizeValidator())
+
+    return this
+}
+
 class JakartaValidationModule : ValidazorModule {
     override fun configure(builder: Validazor.Builder) {
-        builder.register(AssertFalseValidator())
-        builder.register(AssertTrueValidator())
-        builder.register(DecimalMaxValidator())
-        builder.register(DecimalMinValidator())
-        builder.register(DigitsValidator())
-        builder.register(EmailValidator())
-        builder.register(FutureValidator())
-        builder.register(FutureOrPresentValidator())
-        builder.register(MaxValidator())
-        builder.register(MinValidator())
-        builder.register(NegativeValidator())
-        builder.register(NegativeOrZeroValidator())
-        builder.register(NotBlankValidator())
-        builder.register(NotEmptyValidator())
-        builder.register(NotNullValidator())
-        builder.register(NullValidator())
-        builder.register(PastValidator())
-        builder.register(PastOrPresentValidator())
-        builder.register(PatternValidator())
-        builder.register(PositiveValidator())
-        builder.register(PositiveOrZeroValidator())
-        builder.register(SizeValidator())
+        builder.registerJakartaConstraints()
+    }
+
+    companion object {
+        /**
+         * Takes an instance of [Validazor.Builder] and configures it to contain all the Jakarta [ConstraintValidator]s.
+         */
+        @JvmStatic
+        fun asModule(builder: Validazor.Builder) {
+            builder.registerJakartaConstraints()
+        }
     }
 }

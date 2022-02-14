@@ -30,7 +30,7 @@ annotation class Email(
     /**
      * A [ConstraintValidator] for the Jakarta [Email] constraint.
      */
-    class EmailValidator : ConstraintValidator<Email> {
+    class Validator : ConstraintValidator<Email> {
         override fun validate(
             constraint: Email,
             value: Any?,

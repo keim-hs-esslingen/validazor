@@ -26,7 +26,7 @@ annotation class NegativeOrZero {
     /**
      * [ConstraintValidator] for the [NegativeOrZero] constraint.
      */
-    class NValidator : ConstraintValidator<NegativeOrZero> {
+    class Validator : ConstraintValidator<NegativeOrZero> {
         override fun validate(
             constraint: NegativeOrZero,
             value: Any?,
