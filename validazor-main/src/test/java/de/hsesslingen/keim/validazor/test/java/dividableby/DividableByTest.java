@@ -1,10 +1,10 @@
 package de.hsesslingen.keim.validazor.test.java.dividableby;
 
+import de.hsesslingen.keim.validazor.DefaultValidators;
 import de.hsesslingen.keim.validazor.Validazor;
 import de.hsesslingen.keim.validazor.ViolationException;
 import org.junit.jupiter.api.Test;
 
-import static de.hsesslingen.keim.validazor.DefaultValidators.getDefaultValidator;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DividableByTest {
@@ -21,7 +21,12 @@ public class DividableByTest {
         // because the retrieved Validazor is stateless and can be reused.
         // Provide it to your injection framework of choice.
         var validazor = new Validazor.Builder()
+                // Here we register our custom constraint:
                 .register(DividableBy.class, new DividableBy.Validator())
+                // If we also want the Jakarta constraints and the common ones from Validazor as well,
+                // register the `DefaultValidators` as module. This is not required for custom
+                // constraints to work.
+                .register(DefaultValidators::asModule)
                 .build();
 
         // Validate and asses violations

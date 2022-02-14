@@ -1,8 +1,6 @@
 package de.hsesslingen.keim.validazor.test.kotlin.dividableby
 
-import de.hsesslingen.keim.validazor.Validazor
-import de.hsesslingen.keim.validazor.Violation
-import de.hsesslingen.keim.validazor.ViolationException
+import de.hsesslingen.keim.validazor.*
 import de.hsesslingen.keim.validazor.test.java.dividableby.DividableBy
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -15,7 +13,12 @@ class DividableByTest {
         val data = Data(intValue = 3, longValue = 4)
 
         val validazor = Validazor.Builder()
+            // Here we register our custom constraint:
             .register(DividableBy.Validator())
+            // If we also want the Jakarta constraints and the common ones from Validazor as well,
+            // register the `DefaultValidators` using this extension function.
+            // This is not required for custom constraints to work.
+            .registerDefaultValidators()
             .build()
 
         // Validate and asses violations
