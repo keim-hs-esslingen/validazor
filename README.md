@@ -44,7 +44,7 @@ The library is available at the maven central repository.
 
 <dependencies>
     <dependency>
-        <groupId>com.github.keim-hs-esslingen</groupId>
+        <groupId>com.github.keim-hs-esslingen.validazor</groupId>
         <artifactId>validazor</artifactId>
         <version>@{validazorVersion}</version>
     </dependency>
@@ -405,7 +405,7 @@ configuration:
 ```xml
 
 <dependency>
-    <groupId>com.github.keim-hs-esslingen</groupId>
+    <groupId>com.github.keim-hs-esslingen.validazor</groupId>
     <artifactId>validazor-jakarta</artifactId>
     <version>@{validazorVersion}</version>
 </dependency>
@@ -462,12 +462,12 @@ from the `validazor-common-constraints` artifact. They will no longer be on your
 
 <dependencies>
     <dependency>
-        <groupId>com.github.keim-hs-esslingen</groupId>
+        <groupId>com.github.keim-hs-esslingen.validazor</groupId>
         <artifactId>validazor-core</artifactId>
         <version>@{validazorVersion}</version>
     </dependency>
     <dependency>
-        <groupId>com.github.keim-hs-esslingen</groupId>
+        <groupId>com.github.keim-hs-esslingen.validazor</groupId>
         <artifactId>validazor-jakarta</artifactId>
         <version>@{validazorVersion}</version>
     </dependency>
