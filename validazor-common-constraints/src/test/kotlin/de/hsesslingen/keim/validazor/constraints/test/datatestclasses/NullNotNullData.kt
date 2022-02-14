@@ -4,9 +4,9 @@ import de.hsesslingen.keim.validazor.constraints.NotNull
 import de.hsesslingen.keim.validazor.constraints.Null
 
 class NullNotNullData(
-    @field:Null
+    @Null
     val nullValue: Any? = null,
 
-    @field:NotNull
+    @NotNull
     val notNullValue: Any? = Any(),
 )

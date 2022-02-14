@@ -4,13 +4,13 @@ import de.hsesslingen.keim.validazor.constraints.Email
 
 
 class EmailData(
-    @field:Email
+    @Email
     val stringValue: String? = null,
-    @field:Email
+    @Email
     val charSequenceValue: CharSequence? = null,
-    @field:Email(regexp = EXTRA_PATTERN)
+    @Email(regexp = EXTRA_PATTERN)
     val stringValueWithPattern: String? = null,
-    @field:Email(regexp = EXTRA_PATTERN)
+    @Email(regexp = EXTRA_PATTERN)
     val charSequenceValueWithPattern: CharSequence? = null,
 ) {
     companion object {

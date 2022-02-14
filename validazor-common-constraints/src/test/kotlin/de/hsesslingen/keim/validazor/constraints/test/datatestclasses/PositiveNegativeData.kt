@@ -8,75 +8,75 @@ import java.math.BigDecimal
 import java.math.BigInteger
 
 class PositiveNegativeData(
-    @field:Negative
+    @Negative
     val negativeByte: Byte? = null,
-    @field:NegativeOrZero
+    @NegativeOrZero
     val negativeOrZeroByte: Byte? = null,
-    @field:Positive
+    @Positive
     val positiveByte: Byte? = null,
-    @field:PositiveOrZero
+    @PositiveOrZero
     val positiveOrZeroByte: Byte? = null,
 
-    @field:Negative
+    @Negative
     val negativeShort: Short? = null,
-    @field:NegativeOrZero
+    @NegativeOrZero
     val negativeOrZeroShort: Short? = null,
-    @field:Positive
+    @Positive
     val positiveShort: Short? = null,
-    @field:PositiveOrZero
+    @PositiveOrZero
     val positiveOrZeroShort: Short? = null,
 
-    @field:Negative
+    @Negative
     val negativeInt: Int? = null,
-    @field:NegativeOrZero
+    @NegativeOrZero
     val negativeOrZeroInt: Int? = null,
-    @field:Positive
+    @Positive
     val positiveInt: Int? = null,
-    @field:PositiveOrZero
+    @PositiveOrZero
     val positiveOrZeroInt: Int? = null,
 
-    @field:Negative
+    @Negative
     val negativeLong: Long? = null,
-    @field:NegativeOrZero
+    @NegativeOrZero
     val negativeOrZeroLong: Long? = null,
-    @field:Positive
+    @Positive
     val positiveLong: Long? = null,
-    @field:PositiveOrZero
+    @PositiveOrZero
     val positiveOrZeroLong: Long? = null,
 
-    @field:Negative
+    @Negative
     val negativeFloat: Float? = null,
-    @field:NegativeOrZero
+    @NegativeOrZero
     val negativeOrZeroFloat: Float? = null,
-    @field:Positive
+    @Positive
     val positiveFloat: Float? = null,
-    @field:PositiveOrZero
+    @PositiveOrZero
     val positiveOrZeroFloat: Float? = null,
 
-    @field:Negative
+    @Negative
     val negativeDouble: Double? = null,
-    @field:NegativeOrZero
+    @NegativeOrZero
     val negativeOrZeroDouble: Double? = null,
-    @field:Positive
+    @Positive
     val positiveDouble: Double? = null,
-    @field:PositiveOrZero
+    @PositiveOrZero
     val positiveOrZeroDouble: Double? = null,
 
-    @field:Negative
+    @Negative
     val negativeBigInteger: BigInteger? = null,
-    @field:NegativeOrZero
+    @NegativeOrZero
     val negativeOrZeroBigInteger: BigInteger? = null,
-    @field:Positive
+    @Positive
     val positiveBigInteger: BigInteger? = null,
-    @field:PositiveOrZero
+    @PositiveOrZero
     val positiveOrZeroBigInteger: BigInteger? = null,
 
-    @field:Negative
+    @Negative
     val negativeBigDecimal: BigDecimal? = null,
-    @field:NegativeOrZero
+    @NegativeOrZero
     val negativeOrZeroBigDecimal: BigDecimal? = null,
-    @field:Positive
+    @Positive
     val positiveBigDecimal: BigDecimal? = null,
-    @field:PositiveOrZero
+    @PositiveOrZero
     val positiveOrZeroBigDecimal: BigDecimal? = null,
 )

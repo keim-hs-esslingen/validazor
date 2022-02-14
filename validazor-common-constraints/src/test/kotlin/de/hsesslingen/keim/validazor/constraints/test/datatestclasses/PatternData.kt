@@ -3,9 +3,9 @@ package de.hsesslingen.keim.validazor.constraints.test.datatestclasses
 import de.hsesslingen.keim.validazor.constraints.Pattern
 
 class PatternData(
-    @field:Pattern(regexp = PATTERN)
+    @Pattern(regexp = PATTERN)
     val charSequenceValue: CharSequence = "",
-    @field:Pattern(regexp = PATTERN)
+    @Pattern(regexp = PATTERN)
     val stringValue: String = "",
 ) {
     companion object {

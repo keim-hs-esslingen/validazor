@@ -13,162 +13,162 @@ import java.util.*
 
 
 class TemporalData(
-    @field:Future
+    @Future
     val futureDateValue: Date? = null,
-    @field:FutureOrPresent
+    @FutureOrPresent
     val futureOrPresentDateValue: Date? = null,
-    @field:Past
+    @Past
     val pastDateValue: Date? = null,
-    @field:PastOrPresent
+    @PastOrPresent
     val pastOrPresentDateValue: Date? = null,
 
 
-    @field:Future
+    @Future
     val futureCalendarValue: Calendar? = null,
-    @field:FutureOrPresent
+    @FutureOrPresent
     val futureOrPresentCalendarValue: Calendar? = null,
-    @field:Past
+    @Past
     val pastCalendarValue: Calendar? = null,
-    @field:PastOrPresent
+    @PastOrPresent
     val pastOrPresentCalendarValue: Calendar? = null,
 
 
-    @field:Future
+    @Future
     val futureInstantValue: Instant? = null,
-    @field:FutureOrPresent
+    @FutureOrPresent
     val futureOrPresentInstantValue: Instant? = null,
-    @field:Past
+    @Past
     val pastInstantValue: Instant? = null,
-    @field:PastOrPresent
+    @PastOrPresent
     val pastOrPresentInstantValue: Instant? = null,
 
 
-    @field:Future
+    @Future
     val futureLocalDateValue: LocalDate? = null,
-    @field:FutureOrPresent
+    @FutureOrPresent
     val futureOrPresentLocalDateValue: LocalDate? = null,
-    @field:Past
+    @Past
     val pastLocalDateValue: LocalDate? = null,
-    @field:PastOrPresent
+    @PastOrPresent
     val pastOrPresentLocalDateValue: LocalDate? = null,
 
 
-    @field:Future
+    @Future
     val futureLocalTimeValue: LocalTime? = null,
-    @field:FutureOrPresent
+    @FutureOrPresent
     val futureOrPresentLocalTimeValue: LocalTime? = null,
-    @field:Past
+    @Past
     val pastLocalTimeValue: LocalTime? = null,
-    @field:PastOrPresent
+    @PastOrPresent
     val pastOrPresentLocalTimeValue: LocalTime? = null,
 
 
-    @field:Future
+    @Future
     val futureLocalDateTimeValue: LocalDateTime? = null,
-    @field:FutureOrPresent
+    @FutureOrPresent
     val futureOrPresentLocalDateTimeValue: LocalDateTime? = null,
-    @field:Past
+    @Past
     val pastLocalDateTimeValue: LocalDateTime? = null,
-    @field:PastOrPresent
+    @PastOrPresent
     val pastOrPresentLocalDateTimeValue: LocalDateTime? = null,
 
 
-    @field:Future
+    @Future
     val futureOffsetTimeValue: OffsetTime? = null,
-    @field:FutureOrPresent
+    @FutureOrPresent
     val futureOrPresentOffsetTimeValue: OffsetTime? = null,
-    @field:Past
+    @Past
     val pastOffsetTimeValue: OffsetTime? = null,
-    @field:PastOrPresent
+    @PastOrPresent
     val pastOrPresentOffsetTimeValue: OffsetTime? = null,
 
 
-    @field:Future
+    @Future
     val futureOffsetDateTimeValue: OffsetDateTime? = null,
-    @field:FutureOrPresent
+    @FutureOrPresent
     val futureOrPresentOffsetDateTimeValue: OffsetDateTime? = null,
-    @field:Past
+    @Past
     val pastOffsetDateTimeValue: OffsetDateTime? = null,
-    @field:PastOrPresent
+    @PastOrPresent
     val pastOrPresentOffsetDateTimeValue: OffsetDateTime? = null,
 
 
-    @field:Future
+    @Future
     val futureZonedDateTimeValue: ZonedDateTime? = null,
-    @field:FutureOrPresent
+    @FutureOrPresent
     val futureOrPresentZonedDateTimeValue: ZonedDateTime? = null,
-    @field:Past
+    @Past
     val pastZonedDateTimeValue: ZonedDateTime? = null,
-    @field:PastOrPresent
+    @PastOrPresent
     val pastOrPresentZonedDateTimeValue: ZonedDateTime? = null,
 
 
-    @field:Future
+    @Future
     val futureYearValue: Year? = null,
-    @field:FutureOrPresent
+    @FutureOrPresent
     val futureOrPresentYearValue: Year? = null,
-    @field:Past
+    @Past
     val pastYearValue: Year? = null,
-    @field:PastOrPresent
+    @PastOrPresent
     val pastOrPresentYearValue: Year? = null,
 
 
-    @field:Future
+    @Future
     val futureYearMonthValue: YearMonth? = null,
-    @field:FutureOrPresent
+    @FutureOrPresent
     val futureOrPresentYearMonthValue: YearMonth? = null,
-    @field:Past
+    @Past
     val pastYearMonthValue: YearMonth? = null,
-    @field:PastOrPresent
+    @PastOrPresent
     val pastOrPresentYearMonthValue: YearMonth? = null,
 
 
-    @field:Future
+    @Future
     val futureMonthDayValue: MonthDay? = null,
-    @field:FutureOrPresent
+    @FutureOrPresent
     val futureOrPresentMonthDayValue: MonthDay? = null,
-    @field:Past
+    @Past
     val pastMonthDayValue: MonthDay? = null,
-    @field:PastOrPresent
+    @PastOrPresent
     val pastOrPresentMonthDayValue: MonthDay? = null,
 
 
-    @field:Future
+    @Future
     val futureHijrahDateValue: HijrahDate? = null,
-    @field:FutureOrPresent
+    @FutureOrPresent
     val futureOrPresentHijrahDateValue: HijrahDate? = null,
-    @field:Past
+    @Past
     val pastHijrahDateValue: HijrahDate? = null,
-    @field:PastOrPresent
+    @PastOrPresent
     val pastOrPresentHijrahDateValue: HijrahDate? = null,
 
 
-    @field:Future
+    @Future
     val futureJapaneseDateValue: JapaneseDate? = null,
-    @field:FutureOrPresent
+    @FutureOrPresent
     val futureOrPresentJapaneseDateValue: JapaneseDate? = null,
-    @field:Past
+    @Past
     val pastJapaneseDateValue: JapaneseDate? = null,
-    @field:PastOrPresent
+    @PastOrPresent
     val pastOrPresentJapaneseDateValue: JapaneseDate? = null,
 
 
-    @field:Future
+    @Future
     val futureMinguoDateValue: MinguoDate? = null,
-    @field:FutureOrPresent
+    @FutureOrPresent
     val futureOrPresentMinguoDateValue: MinguoDate? = null,
-    @field:Past
+    @Past
     val pastMinguoDateValue: MinguoDate? = null,
-    @field:PastOrPresent
+    @PastOrPresent
     val pastOrPresentMinguoDateValue: MinguoDate? = null,
 
 
-    @field:Future
+    @Future
     val futureThaiBuddhistDateValue: ThaiBuddhistDate? = null,
-    @field:FutureOrPresent
+    @FutureOrPresent
     val futureOrPresentThaiBuddhistDateValue: ThaiBuddhistDate? = null,
-    @field:Past
+    @Past
     val pastThaiBuddhistDateValue: ThaiBuddhistDate? = null,
-    @field:PastOrPresent
+    @PastOrPresent
     val pastOrPresentThaiBuddhistDateValue: ThaiBuddhistDate? = null,
 )

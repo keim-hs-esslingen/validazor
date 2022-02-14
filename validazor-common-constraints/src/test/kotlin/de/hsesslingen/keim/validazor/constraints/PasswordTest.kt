@@ -86,7 +86,7 @@ class PasswordTest {
     }
 
     class TestObject1(
-        @field:Password(
+        @Password(
             minLength = 2,
             maxLength = 5,
             requiredCharacterKinds = [
@@ -100,12 +100,12 @@ class PasswordTest {
     )
 
     class TestObject2(
-        @field:Password(allowedCharacters = ['a', 'b'])
+        @Password(allowedCharacters = ['a', 'b'])
         val password: String
     )
 
     class TestObject3(
-        @field:Password(minEntropyBits = 120.0)
+        @Password(minEntropyBits = 120.0)
         val password: String
     )
 }

@@ -7,36 +7,36 @@ import java.math.BigInteger
 
 
 class MinMaxData(
-    @field:Max(MAX_VALID_NUMBER)
-    @field:Min(MIN_VALID_NUMBER)
+    @Max(MAX_VALID_NUMBER)
+    @Min(MIN_VALID_NUMBER)
     val byteValue: Byte? = null,
 
-    @field:Max(MAX_VALID_NUMBER)
-    @field:Min(MIN_VALID_NUMBER)
+    @Max(MAX_VALID_NUMBER)
+    @Min(MIN_VALID_NUMBER)
     val shortValue: Short? = null,
 
-    @field:Max(MAX_VALID_NUMBER)
-    @field:Min(MIN_VALID_NUMBER)
+    @Max(MAX_VALID_NUMBER)
+    @Min(MIN_VALID_NUMBER)
     val intValue: Int? = null,
 
-    @field:Max(MAX_VALID_NUMBER)
-    @field:Min(MIN_VALID_NUMBER)
+    @Max(MAX_VALID_NUMBER)
+    @Min(MIN_VALID_NUMBER)
     val longValue: Long? = null,
 
-    @field:Max(MAX_VALID_NUMBER)
-    @field:Min(MIN_VALID_NUMBER)
+    @Max(MAX_VALID_NUMBER)
+    @Min(MIN_VALID_NUMBER)
     val bigIntegerValue: BigInteger? = null,
 
-    @field:Max(MAX_VALID_NUMBER)
-    @field:Min(MIN_VALID_NUMBER)
+    @Max(MAX_VALID_NUMBER)
+    @Min(MIN_VALID_NUMBER)
     val bigDecimalValue: BigDecimal? = null,
 
-    @field:Max(MAX_VALID_NUMBER) // Support for floating points is optional by API
-    @field:Min(MIN_VALID_NUMBER) // Support for floating points is optional by API
+    @Max(MAX_VALID_NUMBER) // Support for floating points is optional by API
+    @Min(MIN_VALID_NUMBER) // Support for floating points is optional by API
     val doubleValue: Double? = null,
 
-    @field:Max(MAX_VALID_NUMBER) // Support for floating points is optional by API
-    @field:Min(MIN_VALID_NUMBER) // Support for floating points is optional by API
+    @Max(MAX_VALID_NUMBER) // Support for floating points is optional by API
+    @Min(MIN_VALID_NUMBER) // Support for floating points is optional by API
     val floatValue: Float? = null,
 ) {
     companion object {

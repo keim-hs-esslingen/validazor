@@ -7,34 +7,34 @@ import java.math.BigInteger
 
 class DigitsData(
 
-    @field:Digits(integer = MAX_INTEGER_DIGITS, fraction = MAX_FRACTION_DIGITS)
+    @Digits(integer = MAX_INTEGER_DIGITS, fraction = MAX_FRACTION_DIGITS)
     val byteValue: Byte? = null,
 
-    @field:Digits(integer = MAX_INTEGER_DIGITS, fraction = MAX_FRACTION_DIGITS)
+    @Digits(integer = MAX_INTEGER_DIGITS, fraction = MAX_FRACTION_DIGITS)
     val shortValue: Short? = null,
 
-    @field:Digits(integer = MAX_INTEGER_DIGITS, fraction = MAX_FRACTION_DIGITS)
+    @Digits(integer = MAX_INTEGER_DIGITS, fraction = MAX_FRACTION_DIGITS)
     val intValue: Int? = null,
 
-    @field:Digits(integer = MAX_INTEGER_DIGITS, fraction = MAX_FRACTION_DIGITS)
+    @Digits(integer = MAX_INTEGER_DIGITS, fraction = MAX_FRACTION_DIGITS)
     val longValue: Long? = null,
 
-    @field:Digits(integer = MAX_INTEGER_DIGITS, fraction = MAX_FRACTION_DIGITS)
+    @Digits(integer = MAX_INTEGER_DIGITS, fraction = MAX_FRACTION_DIGITS)
     val bigIntegerValue: BigInteger? = null,
 
-    @field:Digits(integer = MAX_INTEGER_DIGITS, fraction = MAX_FRACTION_DIGITS)
+    @Digits(integer = MAX_INTEGER_DIGITS, fraction = MAX_FRACTION_DIGITS)
     val bigDecimalValue: BigDecimal? = null,
 
-    @field:Digits(integer = MAX_INTEGER_DIGITS, fraction = MAX_FRACTION_DIGITS)
+    @Digits(integer = MAX_INTEGER_DIGITS, fraction = MAX_FRACTION_DIGITS)
     val doubleValue: Double? = null,
 
-    @field:Digits(integer = MAX_INTEGER_DIGITS, fraction = MAX_FRACTION_DIGITS)
+    @Digits(integer = MAX_INTEGER_DIGITS, fraction = MAX_FRACTION_DIGITS)
     val floatValue: Float? = null,
 
-    @field:Digits(integer = MAX_CRAZY_INTEGER_DIGITS, fraction = MAX_CRAZY_FRACTION_DIGITS)
+    @Digits(integer = MAX_CRAZY_INTEGER_DIGITS, fraction = MAX_CRAZY_FRACTION_DIGITS)
     val bigDecimalCrazyValue: BigDecimal? = null,
 
-    @field:Digits(integer = MAX_CRAZY_INTEGER_DIGITS, fraction = MAX_CRAZY_FRACTION_DIGITS)
+    @Digits(integer = MAX_CRAZY_INTEGER_DIGITS, fraction = MAX_CRAZY_FRACTION_DIGITS)
     val doubleCrazyValue: Double? = null,
 ) {
     companion object {
