@@ -31,6 +31,12 @@ GitHub. Feel free to open an issue there.
     1. [Registration of Module](#registration-of-jakartamodule)
     2. [Important for Kotlin users](#important-for-kotlin-users-of-jakarta-constraints-with-validazor)
 5. [General Drawbacks](#general-drawbacks)
+6. [Violations](#violations)
+    1. [Paths](#paths)
+        1. [Collections](#collection-paths)
+        2. [Maps](#map-paths)
+        3. [Where-Notation](#where-notation)
+    2. [Constraint-Info](#constraint-info)
 
 ---
 
@@ -410,9 +416,9 @@ configuration:
     <version>@{validazorVersion}</version>
 </dependency>
 <dependency>
-   <groupId>jakarta.validation</groupId>
-   <artifactId>jakarta.validation-api</artifactId>
-   <version>3.0.1</version>
+    <groupId>jakarta.validation</groupId>
+    <artifactId>jakarta.validation-api</artifactId>
+    <version>3.0.1</version>
 </dependency>
 ```
 
@@ -520,3 +526,69 @@ These are:
 
 - No support for validation groups.
 - Kotlin-Stdlib is required as transitive dependency for Java users (might change in future)
+
+---
+
+## Violations:
+
+The returned violations from a validation contain the following information:
+
+```json
+{
+  "path": "path.to.the.value.that.violations.a.constraint",
+  "message": "must be dividable by 2",
+  "constraint": {
+    "id": "de.hsesslingen.keim.validazor.constraints.DividableBy",
+    "details": {
+      "value": 2
+    }
+  }
+}
+```
+
+### Paths:
+
+The `path` is a string containing to location of the value in the object that was validated. This path usually is
+dot-separated. The separator used for separating child properties from their parent can be configured
+in `Validazor.Builder` instances.
+
+Validazor also validates the elements of collections and the keys and values of maps.
+
+#### Collection paths:
+
+The path for collection items is denoted in the path using `collection[index]`, with `collection` being the field name
+of the collection and `index` the numerical index of the element that violated some constraint.
+
+#### Map paths:
+
+The path for map keys is denoted in the path using `map.keys[key]`, with `map` being the field name of the map, `keys`
+being a constant value meaning that the path points to the collection of keys inside the map, and `key` being
+the `.toString()` representation of the key object.
+
+For map values a similar notation is used. The only difference is that the `keys` constant is being omitted. This
+results in the following notation: `map[key]`, with map being the field name of the map and `key` the `.toString()`
+representation of the key object. This path points to ***the value*** mapped to this key inside the map, not the key
+itself.
+
+#### Where-Notation:
+
+There is also a third special notation that can be used in custom constraints. It is called the "where" notation a looks
+like this: `collection[where id=something]`
+
+- `collection` is again the field name that holds some kind of inner value, e.g. a collection.
+- `where ` (including space after) is a constant value declaring this as a "where" notation.
+- `id` is the name of an inner property for which the value is denoted after the `=`
+- `something` is the value of the property `id` of an inner value inside `collection`.
+
+This notation can be used if inner items (e.g. of a collection, but not restricted to that) should not be identified by
+a numerical index, but by a property of their own, e.g. an ID.
+
+### Constraint-Info:
+
+Each violation contains a `ConstraintInfo` object on the property `constraint`. This object holds general information
+about the constraint, that can be used to parse the violation using machines, without having to parse the message
+itself. This can e.g. help a lot with localization of messages in UIs.
+
+Each `ConstraintInfo` object contains an `id` that uniquely identifies this constraint, usually by its full class name,
+but not restricted to that. Furthermore, each `ConstraintInfo` object contains a `details` property that is a map of all
+the properties of the constraint, basically the fields inside the constraint annotation.
