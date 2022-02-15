@@ -1,4 +1,4 @@
-package de.hsesslingen.keim.validazor.test
+package de.hsesslingen.keim.validazor.testutils
 
 import de.hsesslingen.keim.validazor.ConstraintValidator
 import de.hsesslingen.keim.validazor.NowContext

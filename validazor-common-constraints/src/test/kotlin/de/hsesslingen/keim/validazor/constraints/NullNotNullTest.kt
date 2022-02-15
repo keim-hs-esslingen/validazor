@@ -1,9 +1,9 @@
 package de.hsesslingen.keim.validazor.constraints
 
-import de.hsesslingen.keim.validazor.constraints.test.assertPresent
 import de.hsesslingen.keim.validazor.constraints.test.assertValid
 import de.hsesslingen.keim.validazor.constraints.test.datatestclasses.NullNotNullData
 import de.hsesslingen.keim.validazor.constraints.test.validate
+import de.hsesslingen.keim.validazor.test.assertPresent
 import org.junit.jupiter.api.Test
 
 

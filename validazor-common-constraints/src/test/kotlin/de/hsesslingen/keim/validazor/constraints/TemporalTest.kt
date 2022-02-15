@@ -1,10 +1,10 @@
 package de.hsesslingen.keim.validazor.constraints
 
 import de.hsesslingen.keim.validazor.NowContext
-import de.hsesslingen.keim.validazor.constraints.test.assertMessage
 import de.hsesslingen.keim.validazor.constraints.test.assertValid
 import de.hsesslingen.keim.validazor.constraints.test.datatestclasses.TemporalData
 import de.hsesslingen.keim.validazor.constraints.test.validate
+import de.hsesslingen.keim.validazor.test.assertMessage
 import org.junit.jupiter.api.Test
 import java.time.ZoneId
 import java.time.ZonedDateTime

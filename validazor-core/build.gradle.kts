@@ -28,7 +28,6 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
 
-    testImplementation(project(":validazor-test-utils"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jupiterApiVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }

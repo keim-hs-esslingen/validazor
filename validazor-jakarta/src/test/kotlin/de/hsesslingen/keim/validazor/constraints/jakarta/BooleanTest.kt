@@ -1,9 +1,9 @@
 package de.hsesslingen.keim.validazor.constraints.jakarta
 
-import de.hsesslingen.keim.validazor.constraints.jakarta.test.assertPresent
 import de.hsesslingen.keim.validazor.constraints.jakarta.test.assertValid
 import de.hsesslingen.keim.validazor.constraints.jakarta.test.datatestclasses.BooleanData
 import de.hsesslingen.keim.validazor.constraints.jakarta.test.validate
+import de.hsesslingen.keim.validazor.test.assertPresent
 import org.junit.jupiter.api.Test
 
 class BooleanTest {

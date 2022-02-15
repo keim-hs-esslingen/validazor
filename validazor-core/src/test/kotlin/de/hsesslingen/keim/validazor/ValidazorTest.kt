@@ -1,9 +1,8 @@
 package de.hsesslingen.keim.validazor
 
-import de.hsesslingen.keim.validazor.test.*
+import de.hsesslingen.keim.validazor.testutils.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import java.lang.Exception
 
 class ValidazorTest {
 

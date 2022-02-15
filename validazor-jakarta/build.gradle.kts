@@ -28,7 +28,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation(project(":validazor-core"))
+    api(project(":validazor-core"))
     implementation("jakarta.validation:jakarta.validation-api:$jakartaApiVersion")
 
     testImplementation(project(":validazor-test-utils"))
