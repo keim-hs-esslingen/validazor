@@ -1,6 +1,5 @@
 package de.hsesslingen.keim.validazor.constraints
 
-import de.hsesslingen.keim.validazor.constraints.test.assertMessage
 import de.hsesslingen.keim.validazor.constraints.test.assertValid
 import de.hsesslingen.keim.validazor.constraints.test.datatestclasses.DigitsData
 import de.hsesslingen.keim.validazor.constraints.test.datatestclasses.DigitsData.Companion.INVALID_CRAZY_VALUE
@@ -14,6 +13,7 @@ import de.hsesslingen.keim.validazor.constraints.test.datatestclasses.DigitsData
 import de.hsesslingen.keim.validazor.constraints.test.datatestclasses.DigitsData.Companion.VALID_FRACTION_VALUE
 import de.hsesslingen.keim.validazor.constraints.test.datatestclasses.DigitsData.Companion.VALID_INT_VALUE
 import de.hsesslingen.keim.validazor.constraints.test.validate
+import de.hsesslingen.keim.validazor.test.assertMessage
 import org.junit.jupiter.api.Test
 
 class DigitsTest {

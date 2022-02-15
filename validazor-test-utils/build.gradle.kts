@@ -26,6 +26,7 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":validazor-core"))
     implementation(kotlin("stdlib"))
     implementation("org.junit.jupiter:junit-jupiter-api:$jupiterApiVersion")
 }

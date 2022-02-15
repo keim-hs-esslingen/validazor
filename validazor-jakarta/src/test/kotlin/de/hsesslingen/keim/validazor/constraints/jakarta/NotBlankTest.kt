@@ -1,9 +1,9 @@
 package de.hsesslingen.keim.validazor.constraints.jakarta
 
-import de.hsesslingen.keim.validazor.constraints.jakarta.test.assertMessage
 import de.hsesslingen.keim.validazor.constraints.jakarta.test.assertValid
 import de.hsesslingen.keim.validazor.constraints.jakarta.test.datatestclasses.NotBlankData
 import de.hsesslingen.keim.validazor.constraints.jakarta.test.validate
+import de.hsesslingen.keim.validazor.test.assertMessage
 import org.junit.jupiter.api.Test
 
 

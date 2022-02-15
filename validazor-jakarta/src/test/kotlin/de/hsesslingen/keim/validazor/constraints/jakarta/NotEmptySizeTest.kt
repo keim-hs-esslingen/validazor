@@ -1,11 +1,11 @@
 package de.hsesslingen.keim.validazor.constraints.jakarta
 
-import de.hsesslingen.keim.validazor.constraints.jakarta.test.assertMessage
 import de.hsesslingen.keim.validazor.constraints.jakarta.test.assertValid
 import de.hsesslingen.keim.validazor.constraints.jakarta.test.datatestclasses.NotEmptySizeData
-import de.hsesslingen.keim.validazor.constraints.jakarta.test.datatestclasses.NotEmptySizeData.Companion.MIN_SIZE
 import de.hsesslingen.keim.validazor.constraints.jakarta.test.datatestclasses.NotEmptySizeData.Companion.MAX_SIZE
+import de.hsesslingen.keim.validazor.constraints.jakarta.test.datatestclasses.NotEmptySizeData.Companion.MIN_SIZE
 import de.hsesslingen.keim.validazor.constraints.jakarta.test.validate
+import de.hsesslingen.keim.validazor.test.assertMessage
 import org.junit.jupiter.api.Test
 
 class NotEmptySizeTest {

@@ -1,10 +1,10 @@
 package de.hsesslingen.keim.validazor.constraints
 
-import de.hsesslingen.keim.validazor.constraints.test.assertMessage
 import de.hsesslingen.keim.validazor.constraints.test.assertValid
 import de.hsesslingen.keim.validazor.constraints.test.datatestclasses.EmailData
 import de.hsesslingen.keim.validazor.constraints.test.datatestclasses.EmailData.Companion.EXTRA_PATTERN
 import de.hsesslingen.keim.validazor.constraints.test.validate
+import de.hsesslingen.keim.validazor.test.assertMessage
 import org.junit.jupiter.api.Test
 
 class EmailTest {
