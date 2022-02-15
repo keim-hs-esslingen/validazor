@@ -45,7 +45,7 @@ private fun Any.asMapOfFields(): Map<String, Any?> {
  */
 fun Annotation.toConstraintInfo(): ConstraintInfo {
     return ConstraintInfo(
-        id = this.javaClass.name,
+        id = this.annotationClass.qualifiedName ?: this.javaClass.name,
         details = this.asMapOfFields()
     )
 }

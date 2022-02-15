@@ -23,7 +23,7 @@ annotation class DividableBy(
             now: NowContext
         ) {
             // Calculate remainder on known types.
-            val remainder = when(value) {
+            val remainder = when (value) {
                 null -> return // null values usually are considered valid. Nothing to do.
                 is Int -> value % constraint.value
                 is Long -> value % constraint.value
