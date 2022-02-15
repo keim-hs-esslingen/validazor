@@ -220,15 +220,15 @@ Let's implement a constraint that checks if an integer or long is dividable by a
 
 ```kotlin
 @Target(AnnotationTarget.FIELD)
-annotation class DividableBy(
+annotation class test.DividableBy(
     val value: Long = 1
 ) {
     // We put the validator implementation right here because they belong together.
-    class Validator : ConstraintValidator<DividableBy> {
+    class Validator : ConstraintValidator<test.DividableBy> {
 
         override fun validate(
             // The particular instance of your constraint.
-            constraint: DividableBy,
+            constraint: test.DividableBy,
             // The value that must be tested.
             value: Any?,
             // The path to the object. Only needed for adding violations.
@@ -272,18 +272,18 @@ annotation class DividableBy(
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface DividableBy {
+public @interface test.DividableBy {
 
     // The value by which the number of interest must be dividable.
     long value() default 1;
 
     // Using a static inner class for the implementation of the validator.
-    class Validator implements ConstraintValidator<DividableBy> {
+    class Validator implements ConstraintValidator<test.DividableBy> {
 
         @Override
         public void validate(
                 // The particular instance of your constraint.
-                @NotNull DividableBy constraint,
+                @NotNull test.DividableBy constraint,
                 // The value that must be tested.
                 @Nullable Object value,
                 // The path to the object. Only needed for adding violations.
@@ -339,7 +339,7 @@ Either allow them on any field, but then use them as follows on usage sites:
 
 ```Kotlin
 class Person(
-    @field:DividableBy(2) // field: prefix required.
+    @field:test.DividableBy(2) // field: prefix required.
     val age: String
 )
 ```
@@ -348,7 +348,7 @@ Or restrict them to only fields and classes and use them freely as follows:
 
 ```Kotlin
 class Person(
-    @DividableBy(2) // No field: prefix needed.
+    @test.DividableBy(2) // No field: prefix needed.
     val age: String
 )
 ```
@@ -365,7 +365,7 @@ import de.hsesslingen.keim.validazor.*
 fun register() {
     val validazor = Validazor.Builder()
         // Here we register our custom constraint:
-        .register(DividableBy.Validator())
+        .register(test.DividableBy.Validator())
         // If we also want the common constraints from Validazor as well,
         // register the default validators using this extension function.
         // However, this is not required for custom constraints to work.
@@ -385,7 +385,7 @@ class Whatever {
     void register() {
         var validazor = new Validazor.Builder()
                 // Here we register our custom constraint:
-                .register(DividableBy.class, new DividableBy.Validator())
+                .register(test.DividableBy.class, new test.DividableBy.Validator())
                 // If we also want the Jakarta constraints and the common ones from Validazor as well,
                 // register the `DefaultValidators` as module. However, this is not required for custom
                 // constraints to work.
@@ -539,7 +539,7 @@ The returned violations from a validation contain the following information:
   "path": "path.to.the.value.that.violations.a.constraint",
   "message": "must be dividable by 2",
   "constraint": {
-    "id": "de.hsesslingen.keim.validazor.constraints.DividableBy",
+    "id": "de.hsesslingen.keim.validazor.constraints.test.DividableBy",
     "details": {
       "value": 2
     }
