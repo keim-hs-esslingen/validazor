@@ -29,11 +29,12 @@ fun Field.checkAndTrySetAccessible(obj: Any): Boolean {
  * Extension function to turn any object into a [Map], by mapping its fields' names to their values.
  * Uses Java reflection to do so.
  */
-private fun Any.asMapOfFields(): Map<String, Any?> {
+private fun Annotation.asMapOfFields(): Map<String, Any?> {
     val map = HashMap<String, Any?>()
 
-    this.javaClass.declaredFields
-        .asSequence()
+    val fields = this.annotationClass.java.declaredFields
+
+    fields.asSequence()
         .mapNotNull { if (it.checkAndTrySetAccessible(this)) it else null }
         .forEach { map[it.name] = it.get(this) }
 
