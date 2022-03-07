@@ -6,6 +6,7 @@ val metaVersion: String by project
 val metaDescription: String by project
 val jupiterApiVersion: String by project
 val jakartaApiVersion: String by project
+val jvmTarget: String by project
 
 // Provided by gradle.properties in gradle home dir.
 val mavenUsername: String by project
@@ -36,6 +37,19 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 
+configurations {
+    apiElements {
+        attributes {
+            attribute(TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE, jvmTarget.toInt())
+        }
+    }
+    runtimeElements {
+        attributes {
+            attribute(TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE, jvmTarget.toInt())
+        }
+    }
+}
+
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
@@ -63,6 +77,10 @@ publishing {
                 description.set(metaDescription)
                 name.set(metaName)
                 url.set("https://github.com/keim-hs-esslingen/validazor")
+
+                properties.set(mapOf(
+                    "maven.compiler.release" to jvmTarget,
+                ))
 
                 licenses {
                     license {
@@ -110,4 +128,8 @@ tasks.javadoc {
     if (JavaVersion.current().isJava9Compatible) {
         (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
     }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions.jvmTarget = jvmTarget
 }
