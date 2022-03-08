@@ -20,6 +20,14 @@ class PropertyPath private constructor(
      */
     private val childSeparator: String,
     /**
+     * The opening separator character for item paths, usually an opening bracket.
+     */
+    private val itemOpeningSeparator: String,
+    /**
+     * The closing separator character for item paths, usually a closing bracket.
+     */
+    private val itemClosingSeparator: String,
+    /**
      * Whether this node represents a nested node.
      * This is e.g. not the case when iterating over collection items.
      */
@@ -41,8 +49,10 @@ class PropertyPath private constructor(
     fun index(index: Int): PropertyPath {
         return PropertyPath(
             parent = this,
-            name = "[$index]",
+            name = itemOpeningSeparator + index + itemClosingSeparator,
             childSeparator = childSeparator,
+            itemOpeningSeparator = itemOpeningSeparator,
+            itemClosingSeparator = itemClosingSeparator,
             separateFromParent = false
         )
     }
@@ -53,8 +63,10 @@ class PropertyPath private constructor(
     fun key(key: Any?): PropertyPath {
         return PropertyPath(
             parent = this,
-            name = "[$key]",
+            name = itemOpeningSeparator + key + itemClosingSeparator,
             childSeparator = childSeparator,
+            itemOpeningSeparator = itemOpeningSeparator,
+            itemClosingSeparator = itemClosingSeparator,
             separateFromParent = false
         )
     }
@@ -67,8 +79,10 @@ class PropertyPath private constructor(
     fun where(propertyName: String, propertyValue: Any?): PropertyPath {
         return PropertyPath(
             parent = this,
-            name = "[where $propertyName=$propertyValue]",
+            name = "${itemOpeningSeparator}where $propertyName=$propertyValue$itemClosingSeparator",
             childSeparator = childSeparator,
+            itemOpeningSeparator = itemOpeningSeparator,
+            itemClosingSeparator = itemClosingSeparator,
             separateFromParent = false
         )
     }
@@ -81,6 +95,8 @@ class PropertyPath private constructor(
             parent = this,
             name = name,
             childSeparator = childSeparator,
+            itemOpeningSeparator = itemOpeningSeparator,
+            itemClosingSeparator = itemClosingSeparator,
             separateFromParent = true
         )
     }
@@ -113,17 +129,36 @@ class PropertyPath private constructor(
         const val DEFAULT_PATH_SEPARATOR = "."
 
         /**
+         * The default item opening separator that is used if none other is configured.
+         */
+        const val DEFAULT_ITEM_OPENING_SEPARATOR = "["
+
+        /**
+         * The default item closing separator that is used if none other is configured.
+         */
+        const val DEFAULT_ITEM_CLOSING_SEPARATOR = "]"
+
+        /**
          * Creates a new root path node.
          *
          * The specified path separator will be used during string generation to separate child nodes from parent nodes.
+         *
+         * @param pathSeparator The path separator that should be used to separate child properties from their parents
+         * during string generation.
+         * @param itemOpeningSeparator The opening separator character for item paths, usually an opening bracket.
+         * @param itemClosingSeparator The closing separator character for item paths, usually a closing bracket.
          */
         fun createRoot(
-            pathSeparator: String = DEFAULT_PATH_SEPARATOR
+            pathSeparator: String = DEFAULT_PATH_SEPARATOR,
+            itemOpeningSeparator: String = DEFAULT_ITEM_OPENING_SEPARATOR,
+            itemClosingSeparator: String = DEFAULT_ITEM_CLOSING_SEPARATOR,
         ): PropertyPath {
             return PropertyPath(
                 parent = null,
                 name = "",
                 childSeparator = pathSeparator,
+                itemOpeningSeparator = itemOpeningSeparator,
+                itemClosingSeparator = itemClosingSeparator,
                 separateFromParent = false
             )
         }

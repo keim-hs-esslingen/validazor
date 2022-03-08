@@ -25,6 +25,15 @@ class Validazor private constructor(
     val pathSeparator: String,
 
     /**
+     * @see [Builder.itemSeparators]
+     */
+    val itemOpeningSeparator: String,
+    /**
+     * @see [Builder.itemSeparators]
+     */
+    val itemClosingSeparator: String,
+
+    /**
      * @see [Builder.excludeStaticFields]
      */
     val excludeStaticFields: Boolean,
@@ -78,7 +87,12 @@ class Validazor private constructor(
      */
     @JvmOverloads
     fun validate(instance: Any, nowContext: NowContext = fromSystemNow()): List<Violation> {
-        val rootPath = PropertyPath.createRoot(pathSeparator = pathSeparator)
+        val rootPath = PropertyPath.createRoot(
+            pathSeparator = pathSeparator,
+            itemOpeningSeparator = itemOpeningSeparator,
+            itemClosingSeparator = itemClosingSeparator
+        )
+
         val tracker = ViolationTracker()
 
         validate(instance, rootPath, tracker, nowContext)
@@ -260,6 +274,14 @@ class Validazor private constructor(
          */
         var pathSeparator: String = PropertyPath.DEFAULT_PATH_SEPARATOR,
         /**
+         * @see [itemSeparators]
+         */
+        var itemOpeningSeparator: String = PropertyPath.DEFAULT_ITEM_OPENING_SEPARATOR,
+        /**
+         * @see [itemSeparators]
+         */
+        var itemClosingSeparator: String = PropertyPath.DEFAULT_ITEM_CLOSING_SEPARATOR,
+        /**
          * @see [excludeStaticFields]
          */
         var excludeStaticFields: Boolean = true,
@@ -288,6 +310,15 @@ class Validazor private constructor(
          */
         fun pathSeparator(value: String): Builder {
             pathSeparator = value
+            return this
+        }
+
+        /**
+         * Which item node separators should be used when converting the location of a property to a string path.
+         */
+        fun itemSeparators(openingSeparator: String, closingSeparator: String): Builder {
+            itemOpeningSeparator = openingSeparator
+            itemClosingSeparator = closingSeparator
             return this
         }
 
@@ -378,6 +409,8 @@ class Validazor private constructor(
         fun build(): Validazor {
             return Validazor(
                 pathSeparator = pathSeparator,
+                itemOpeningSeparator = itemOpeningSeparator,
+                itemClosingSeparator = itemClosingSeparator,
                 excludeStaticFields = excludeStaticFields,
                 excludePrivateFields = excludePrivateFields,
                 excludeProtectedFields = excludeProtectedFields,
