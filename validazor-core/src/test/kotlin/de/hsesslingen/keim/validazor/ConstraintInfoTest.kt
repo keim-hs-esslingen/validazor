@@ -12,20 +12,19 @@ class ConstraintInfoTest {
         val annotation = ToStringEquals(requiredValue = "something")
         val info = ConstraintInfo.fromAnnotation(annotation)
 
-        assertEquals(annotation.javaClass.name, info.id)
+        assertEquals(annotation.annotationClass.java.name, info.id)
         assertNotNull(info.details)
         assertTrue(info.details.containsKey("requiredValue"))
         assertNotNull(info.details["requiredValue"])
         assertEquals("something", info.details["requiredValue"])
     }
 
-
     @Test
     fun testFromAnnotationWithoutDetails() {
         val annotation = NotNull()
         val info = ConstraintInfo.fromAnnotation(annotation)
 
-        assertEquals(annotation.javaClass.name, info.id)
+        assertEquals(annotation.annotationClass.java.name, info.id)
         assertNotNull(info.details)
         assertTrue(info.details.isEmpty())
     }

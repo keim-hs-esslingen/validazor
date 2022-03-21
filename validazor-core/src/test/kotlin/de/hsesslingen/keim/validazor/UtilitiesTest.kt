@@ -12,7 +12,7 @@ class UtilitiesTest {
         val annotation = ToStringEquals(requiredValue = "something")
         val info = annotation.toConstraintInfo()
 
-        assertEquals(annotation.javaClass.name, info.id)
+        assertEquals(annotation.annotationClass.java.name, info.id)
         assertNotNull(info.details)
         assertTrue(info.details.containsKey("requiredValue"))
         assertNotNull(info.details["requiredValue"])
@@ -24,7 +24,7 @@ class UtilitiesTest {
         val annotation = NotNull()
         val info = annotation.toConstraintInfo()
 
-        assertEquals(annotation.javaClass.name, info.id)
+        assertEquals(annotation.annotationClass.java.name, info.id)
         assertNotNull(info.details)
         assertTrue(info.details.isEmpty())
     }
